@@ -1,12 +1,12 @@
 import React from 'react';
 import {} from 'react-native';
-import Home from '@screens/home';
 import { NavigationContainer } from '@react-navigation/native';
+import RootStack from 'navigators/root-stack-navigator';
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Home />
+      <RootStack />
     </NavigationContainer>
   );
 };
