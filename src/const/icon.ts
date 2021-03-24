@@ -5,4 +5,5 @@ export const Icon = {
   profileIconDisable: require('@assets/icon/id-card-disable.png'),
   rankingIcon: require('@assets/icon/trophy.png'),
   rankingIconDisable: require('@assets/icon/trophy-disable.png'),
+  settingIcon: require('@assets/icon/setting.png'),
 };
