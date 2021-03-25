@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "react-native run-android --port=3456",
+    "ios": "react-native run-ios --port=3456",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
@@ -14,7 +14,9 @@
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "i18next": "^20.1.0",
     "react": "17.0.1",
+    "react-i18next": "^11.8.11",
     "react-native": "0.64.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-linear-gradient": "^2.5.6",
