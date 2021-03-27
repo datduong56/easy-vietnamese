@@ -1,5 +1,13 @@
 {
   "translation": {
-    "nickName": "Nick name"
+    "nickName": "Nick name",
+    "joined": "Joined",
+    "following": "Following",
+    "follower": "Follower",
+    "national": "National",
+    "statistic": "Statistic",
+    "streak": "Streak",
+    "experience": "Experience",
+    "rank": "Rank"
   }
 }
