@@ -9,4 +9,5 @@ export const Icon = {
   starIcon: require('@assets/icons/star.png'),
   experienceIcon: require('@assets/icons/notebook.png'),
   diplomaIcon: require('@assets/icons/diploma.png'),
+  arrowNextIcon: require('@assets/icons/arrow-next.png'),
 };

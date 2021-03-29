@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 const useStyle = () =>
   StyleSheet.create({
     text: { fontSize: 16, fontWeight: 'bold', color: '#999', marginLeft: 8 },
-    container: { marginTop: 100, marginHorizontal: 16 },
+    container: { marginTop: 80, marginHorizontal: 16 },
     title: { fontSize: 20, fontWeight: 'bold' },
     statisticContainer: { flex: 1 / 3, alignItems: 'center' },
     statistic: { flexDirection: 'row', alignItems: 'center' },
@@ -33,7 +33,7 @@ const Statistic = () => {
           <Text>{t('experience')}</Text>
           <View style={styles.statistic}>
             <Image source={Icon.experienceIcon} style={styles.icon} />
-            <Text style={styles.text}>300</Text>
+            <Text style={styles.text}>300 exp</Text>
           </View>
         </View>
         <View style={styles.statisticContainer}>

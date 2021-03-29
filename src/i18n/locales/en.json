@@ -8,6 +8,8 @@
     "statistic": "Statistic",
     "streak": "Streak",
     "experience": "Experience",
-    "rank": "Rank"
+    "rank": "Rank",
+    "notFollowing": "Not following anyone yet!",
+    "noFollowed": "No one has followed!"
   }
 }

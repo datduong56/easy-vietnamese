@@ -11,7 +11,7 @@ const useStyles = () =>
       position: 'absolute',
       right: 0,
       left: 0,
-      top: '10%',
+      top: 80,
       borderRadius: 16,
       backgroundColor: '#fff',
       flexDirection: 'row',
