@@ -24,7 +24,7 @@ const useStyles = () =>
     descriptionContainer: { flex: 1, justifyContent: 'center' },
   });
 
-const Infomation = () => {
+const Information = () => {
   const { t } = useTranslation();
   const styles = useStyles();
   return (
@@ -47,4 +47,4 @@ const Infomation = () => {
   );
 };
 
-export default Infomation;
+export default Information;

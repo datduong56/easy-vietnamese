@@ -1,3 +1,5 @@
+import UnderlineSpace from '@components/underline-space';
+import { Color } from '@const/color';
 import { TabActive } from '@const/enum';
 import { Icon } from '@const/icon';
 import isEmpty from 'lodash/isEmpty';
@@ -16,16 +18,15 @@ const useStyle = () =>
     titleContent: { marginVertical: 8, width: (width - 32) / 2, alignItems: 'center' },
     container: { marginTop: 16, marginHorizontal: 16 },
     title: { fontSize: 20, fontWeight: 'bold' },
-    contentContainer: { backgroundColor: '#fff', borderRadius: 16, marginTop: 10, flex: 1 },
+    contentContainer: { backgroundColor: Color.white, borderRadius: 16, marginTop: 10, flex: 1, paddingBottom: 16 },
     contentTitleContainer: { flexDirection: 'row', marginBottom: 8 },
     linearContent: { width: '90%', paddingVertical: 8, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
     userContainer: { flexDirection: 'row', alignItems: 'center' },
     name: { fontSize: 18, fontWeight: 'bold' },
-    experience: { fontSize: 16, fontWeight: 'bold', color: '#999' },
-    icon: { tintColor: '#999', position: 'absolute', right: 16 },
+    experience: { fontSize: 16, fontWeight: 'bold', color: Color.grey },
+    icon: { tintColor: Color.grey25, position: 'absolute', right: 16 },
     avatar: { height: 60, width: 60, borderRadius: 30, marginHorizontal: 16 },
-    underline: { borderWidth: 1, borderColor: '#99999940', marginHorizontal: 16, marginVertical: 8 },
-    noFollow: { fontSize: 16, textAlign: 'center', color: '#999', marginBottom: 16, marginTop: 8, fontWeight: 'bold' },
+    noFollow: { fontSize: 16, textAlign: 'center', color: Color.grey, marginBottom: 16, marginTop: 8, fontWeight: 'bold' },
   });
 
 const Friend = () => {
@@ -46,7 +47,7 @@ const Friend = () => {
           </View>
           <Image source={Icon.arrowNextIcon} style={styles.icon} />
         </TouchableOpacity>
-        {index !== 4 && <View style={styles.underline} />}
+        {index !== 4 && <UnderlineSpace />}
       </Fragment>
     );
   };
@@ -71,7 +72,7 @@ const Friend = () => {
               setTabActive(TabActive.Follower);
             }}>
             <LinearGradient
-              colors={tabActive === TabActive.Follower ? ['#fceabb', '#f8b500'] : ['#fff', '#fff']}
+              colors={tabActive === TabActive.Follower ? Color.linearGradient : Color.whiteLinearGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.linearContent}>
@@ -85,7 +86,7 @@ const Friend = () => {
               setTabActive(TabActive.Following);
             }}>
             <LinearGradient
-              colors={tabActive === TabActive.Following ? ['#fceabb', '#f8b500'] : ['#fff', '#fff']}
+              colors={tabActive === TabActive.Following ? Color.linearGradient : Color.whiteLinearGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.linearContent}>
