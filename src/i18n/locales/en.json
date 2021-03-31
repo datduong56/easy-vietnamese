@@ -10,6 +10,8 @@
     "experience": "Experience",
     "rank": "Rank",
     "notFollowing": "Not following anyone yet!",
-    "noFollowed": "No one has followed!"
+    "noFollowed": "No one has followed!",
+    "achievement": "Achievement",
+    "level": "Level {{ level }}"
   }
 }
