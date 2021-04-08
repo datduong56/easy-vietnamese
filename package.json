@@ -7,7 +7,8 @@
     "ios": "react-native run-ios --port=3456",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
@@ -39,12 +40,11 @@
     "babel-jest": "^26.6.3",
     "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^7.22.0",
-    "husky": "^4.3.0",
     "jest": "^26.6.3",
-    "lint-staged": "^10.4.0",
     "metro-react-native-babel-preset": "^0.64.0",
     "react-test-renderer": "17.0.1",
-    "typescript": "^4.0.0"
+    "typescript": "^4.0.0",
+    "husky": "^6.0.0"
   },
   "resolutions": {
     "@types/react": "^17"
@@ -58,16 +58,6 @@
       "jsx",
       "json",
       "node"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,tsx,ts}": [
-      "yarn lint"
     ]
   }
 }
