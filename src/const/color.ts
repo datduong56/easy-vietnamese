@@ -8,4 +8,6 @@ export const Color = {
   grey25: '#99999940',
   linearGradient: ['#fceabb', '#f8b500'],
   whiteLinearGradient: ['#ffffff', '#ffffff'],
+  red: '#f85032',
+  green: '#14a15f',
 };

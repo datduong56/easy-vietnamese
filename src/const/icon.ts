@@ -11,4 +11,12 @@ export const Icon = {
   diplomaIcon: require('@assets/icons/diploma.png'),
   arrowNextIcon: require('@assets/icons/arrow-next.png'),
   treasureIcon: require('@assets/icons/treasure.png'),
+  bronzeRankingIcon: require('@assets/icons/bronze.png'),
+  cobaltRankingIcon: require('@assets/icons/cobalt.png'),
+  cyanRankingIcon: require('@assets/icons/cyan.png'),
+  goldRankingIcon: require('@assets/icons/gold.png'),
+  silverRankingIcon: require('@assets/icons/silver.png'),
+  oneIcon: require('@assets/icons/one.png'),
+  twoIcon: require('@assets/icons/two.png'),
+  threeIcon: require('@assets/icons/three.png'),
 };
