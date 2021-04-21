@@ -19,4 +19,5 @@ export const Icon = {
   oneIcon: require('@assets/icons/one.png'),
   twoIcon: require('@assets/icons/two.png'),
   threeIcon: require('@assets/icons/three.png'),
+  doubleUpArrowIcon: require('@assets/icons/double-up-arrow.png'),
 };

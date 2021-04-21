@@ -1,6 +1,7 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 const useStyles = () =>
@@ -13,11 +14,12 @@ const useStyles = () =>
 
 const MyRank = () => {
   const styles = useStyles();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.root}>
       <Image source={Icon.bronzeRankingIcon} style={styles.image} />
-      <Text style={styles.title}>Your Ranking</Text>
+      <Text style={styles.title}>{t('myRanking')}</Text>
       <Text style={styles.description}>Compete against other players in the weekly rankings</Text>
     </View>
   );

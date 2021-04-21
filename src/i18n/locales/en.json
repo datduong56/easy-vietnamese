@@ -12,6 +12,9 @@
     "notFollowing": "Not following anyone yet!",
     "noFollowed": "No one has followed!",
     "achievement": "Achievement",
-    "level": "Level {{ level }}"
+    "level": "Level {{ level }}",
+    "rankUp": "Rank up group",
+    "rankDown": "Rank down group",
+    "myRanking": "My Ranking"
   }
 }
