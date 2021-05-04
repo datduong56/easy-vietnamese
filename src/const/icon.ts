@@ -20,4 +20,6 @@ export const Icon = {
   twoIcon: require('@assets/icons/two.png'),
   threeIcon: require('@assets/icons/three.png'),
   doubleUpArrowIcon: require('@assets/icons/double-up-arrow.png'),
+  speakerIcon: require('@assets/icons/speaker.png'),
+  closeIcon: require('@assets/icons/close.png'),
 };

@@ -1,5 +1,6 @@
 import EZButton from '@components/ez-button';
 import { Color } from '@const/color';
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { SectionList, StyleSheet, Text, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -30,6 +31,7 @@ const useStyle = () =>
 
 const Home = () => {
   const styles = useStyle();
+  const { navigate } = useNavigation();
 
   const renderItem = ({
     item,
@@ -47,7 +49,7 @@ const Home = () => {
           <Text style={styles.lesson}>
             Bài học {item.lesson}/{item.totalLesson}
           </Text>
-          <EZButton title={'bắt đầu học + 10exp'} style={styles.button} />
+          <EZButton title={'bắt đầu học + 10exp'} style={styles.button} onPress={() => navigate('Homework')} />
         </View>
         <View style={styles.circularContainer}>
           <AnimatedCircularProgress

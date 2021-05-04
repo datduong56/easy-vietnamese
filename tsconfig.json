@@ -47,7 +47,8 @@
       "@components/*": ["./components/*"],
       "@assets/*": ["./assets/*"],
       "@stores/*": ["./stores/*"],
-      "@const/*": ["./const/*"]
+      "@const/*": ["./const/*"],
+      "@navigators/*": ["./navigators/*"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
