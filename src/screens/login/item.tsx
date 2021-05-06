@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -35,4 +35,4 @@ const Item = ({ icon, name, showText, color }: ItemType) => {
   );
 };
 
-export default Item;
+export default memo(Item);

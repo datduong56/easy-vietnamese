@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
 import { Animated, Dimensions, ImageSourcePropType, NativeScrollEvent, NativeSyntheticEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Item from './item';
 
@@ -56,4 +56,4 @@ const List = forwardRef<any, ListType>(({ showText, color, style, onScroll, onIt
   );
 });
 
-export default List;
+export default memo(List);
