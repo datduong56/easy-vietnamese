@@ -15,7 +15,7 @@ const useStyle = () =>
   StyleSheet.create({
     root: { borderRadius: 8 },
     container: { width: '100%', borderRadius: 8, paddingHorizontal: 16, paddingVertical: 8 },
-    title: { fontSize: 16, fontWeight: 'bold', lineHeight: 20 },
+    title: { fontSize: 16, fontWeight: 'bold', lineHeight: 20, textAlign: 'center' },
   });
 
 const EZButton = ({ title, style, titleStyle, onPress, onLongPress }: EZButtonProps) => {

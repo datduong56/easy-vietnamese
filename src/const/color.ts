@@ -6,6 +6,8 @@ export const Color = {
   grey: '#999999',
   grey15: '#99999926',
   grey25: '#99999940',
+  grey50: '#99999980',
+  dark: '#2D2D2D',
   linearGradient: ['#fceabb', '#f8b500'],
   whiteLinearGradient: ['#ffffff', '#ffffff'],
   red: '#f85032',

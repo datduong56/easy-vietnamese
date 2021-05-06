@@ -22,4 +22,7 @@ export const Icon = {
   doubleUpArrowIcon: require('@assets/icons/double-up-arrow.png'),
   speakerIcon: require('@assets/icons/speaker.png'),
   closeIcon: require('@assets/icons/close.png'),
+  facebookIcon: require('@assets/icons/facebook.png'),
+  googleIcon: require('@assets/icons/google-plus.png'),
+  phoneIcon: require('@assets/icons/phone-call.png'),
 };
