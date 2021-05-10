@@ -2,8 +2,8 @@ import EZButton from '@components/ez-button';
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import Header from './layout/header';
-import WordList from './list-word';
-import Word from './word';
+import WordList from './list-word/list-word';
+import Word from './list-word/word';
 
 const words = [
   { id: 0, word: 'Where' },

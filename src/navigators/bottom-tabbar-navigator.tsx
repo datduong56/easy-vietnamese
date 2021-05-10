@@ -5,12 +5,14 @@ import Profile from '@screens/profile';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import Ranking from '@screens/ranking';
+import { Color } from '@const/color';
 
 const Tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
   tabbarContainer: {
     height: 60,
+    backgroundColor: Color.dark,
   },
 });
 
@@ -21,21 +23,28 @@ const BottomTabbar = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({ focused }) => <Image source={focused ? Icon.homeIcon : Icon.homeIconDisable} />,
+          tabBarIcon: ({ focused }) => <Image source={Icon.homeIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
       />
       <Tab.Screen
         name="Ranking"
         component={Ranking}
         options={{
-          tabBarIcon: ({ focused }) => <Image source={focused ? Icon.rankingIcon : Icon.rankingIconDisable} />,
+          tabBarIcon: ({ focused }) => <Image source={Icon.videoIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
+        }}
+      />
+      <Tab.Screen
+        name="Game"
+        component={Ranking}
+        options={{
+          tabBarIcon: ({ focused }) => <Image source={Icon.gameIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({ focused }) => <Image source={focused ? Icon.profileIcon : Icon.profileIconDisable} />,
+          tabBarIcon: ({ focused }) => <Image source={Icon.profileIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
       />
     </Tab.Navigator>

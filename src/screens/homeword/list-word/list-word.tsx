@@ -4,7 +4,7 @@ import { View, StyleSheet, Dimensions, LayoutChangeEvent } from 'react-native';
 import { useSharedValue, runOnUI, runOnJS } from 'react-native-reanimated';
 import SharedValue from 'react-native-reanimated';
 import SortableWord from './sortable-word';
-import Lines from './layout/line';
+import Lines from '../layout/line';
 
 const containerWidth = Dimensions.get('window').width - 32 * 2;
 const styles = StyleSheet.create({

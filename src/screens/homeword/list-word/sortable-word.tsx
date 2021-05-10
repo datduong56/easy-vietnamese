@@ -4,8 +4,8 @@ import Animated, { useAnimatedStyle, useAnimatedGestureHandler, withSpring, useS
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import { between, useVector } from 'react-native-redash';
 
-import { calculateLayout, lastOrder, Offset, remove, reorder, WORD_HEIGHT, SENTENCE_HEIGHT, MARGIN_LEFT, MARGIN_TOP } from './layout/index';
-import Placeholder from './layout/placeholder';
+import { calculateLayout, lastOrder, Offset, remove, reorder, WORD_HEIGHT, SENTENCE_HEIGHT, MARGIN_LEFT, MARGIN_TOP } from '../layout/index';
+import Placeholder from '../layout/placeholder';
 
 interface SortableWordProps {
   offsets: Offset[];

@@ -2,7 +2,7 @@ import { Color } from '@const/color';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import { WORD_HEIGHT } from './layout/index';
+import { WORD_HEIGHT } from '../layout/index';
 
 const styles = StyleSheet.create({
   root: {
