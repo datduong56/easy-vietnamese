@@ -12,8 +12,6 @@ export const Icon = {
   bronzeRankingIcon: require('@assets/icons/bronze.png'),
   cobaltRankingIcon: require('@assets/icons/cobalt.png'),
   cyanRankingIcon: require('@assets/icons/cyan.png'),
-  goldRankingIcon: require('@assets/icons/gold.png'),
-  silverRankingIcon: require('@assets/icons/silver.png'),
   oneIcon: require('@assets/icons/one.png'),
   twoIcon: require('@assets/icons/two.png'),
   threeIcon: require('@assets/icons/three.png'),
@@ -23,4 +21,5 @@ export const Icon = {
   facebookIcon: require('@assets/icons/facebook.png'),
   googleIcon: require('@assets/icons/google-plus.png'),
   phoneIcon: require('@assets/icons/phone-call.png'),
+  micIcon: require('@assets/icons/microphone.png'),
 };

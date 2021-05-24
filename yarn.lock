@@ -1108,6 +1108,13 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-voice/voice@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@react-native-voice/voice/-/voice-3.1.5.tgz#e6172e5707f6c56ef0d94ea3ef2a78e8f51e8b93"
+  integrity sha512-lMLOP0bEIXUKJnmKs0QFLy79IbeIky4PU2GWGh9dmYM+IWmJ54qiBZvwfXmA/Ekk7MlyQ65PvfW69j0auGxqRw==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -1365,6 +1372,11 @@
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
+
+"@types/react-native-audio@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@types/react-native-audio/-/react-native-audio-4.3.3.tgz#7fce925c40828929c4bda826e8f18d94482bab0c"
+  integrity sha512-CO5Pb2Gc01vtz/VjEEakegQybAh9RP3cWUgoo9fo+e7e7XIvORmimS+8qXuf/MPMf0WAr3T0H0JxRuUj3k/4LA==
 
 "@types/react-native@^0.63.51":
   version "0.63.52"

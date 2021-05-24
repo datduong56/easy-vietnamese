@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^11.2.0",
+    "@react-native-voice/voice": "^3.1.5",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
@@ -46,6 +47,7 @@
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
     "@types/react-native": "^0.63.51",
+    "@types/react-native-audio": "^4.3.3",
     "@types/react-redux": "^7.1.16",
     "@types/react-test-renderer": "^16.9.2",
     "@types/redux-logger": "^3.0.8",

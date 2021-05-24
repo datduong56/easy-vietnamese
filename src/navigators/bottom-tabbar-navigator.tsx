@@ -4,8 +4,9 @@ import Home from '@screens/home';
 import Profile from '@screens/profile';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
-import Ranking from '@screens/ranking';
 import { Color } from '@const/color';
+import Video from '@screens/video';
+import Game from '@screens/game';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,15 +28,15 @@ const BottomTabbar = () => {
         }}
       />
       <Tab.Screen
-        name="Ranking"
-        component={Ranking}
+        name="Video"
+        component={Video}
         options={{
           tabBarIcon: ({ focused }) => <Image source={Icon.videoIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
       />
       <Tab.Screen
         name="Game"
-        component={Ranking}
+        component={Game}
         options={{
           tabBarIcon: ({ focused }) => <Image source={Icon.gameIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
