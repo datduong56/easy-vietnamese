@@ -7,6 +7,7 @@ import { Image, StyleSheet } from 'react-native';
 import { Color } from '@const/color';
 import Video from '@screens/video';
 import Game from '@screens/game';
+import Stories from '@screens/stories';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,6 +38,13 @@ const BottomTabbar = () => {
       <Tab.Screen
         name="Game"
         component={Game}
+        options={{
+          tabBarIcon: ({ focused }) => <Image source={Icon.gameIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
+        }}
+      />
+      <Tab.Screen
+        name="Stories"
+        component={Stories}
         options={{
           tabBarIcon: ({ focused }) => <Image source={Icon.gameIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}

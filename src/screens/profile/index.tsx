@@ -22,7 +22,7 @@ const Profile = () => {
       <LinearGradient colors={Color.linearGradient} style={styles.bound} start={{ x: 0.8, y: 0.1 }} end={{ x: 1, y: 1 }} />
       <Information />
       <Statistic />
-      <Friend />
+      {/* <Friend /> */}
       <Achievement />
       <TouchableOpacity style={styles.iconContainer}>
         <Image source={Icon.settingIcon} style={styles.icon} />
