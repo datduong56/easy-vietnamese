@@ -24,6 +24,11 @@ const Game = () => {
           style={{ height: 100, width: 100, borderRadius: 16, backgroundColor: '#FFF', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ textAlign: 'center' }}>Luyện nói</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigate('Picture')}
+          style={{ height: 100, width: 100, borderRadius: 16, backgroundColor: '#FFF', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ textAlign: 'center' }}>Chọn ảnh</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
