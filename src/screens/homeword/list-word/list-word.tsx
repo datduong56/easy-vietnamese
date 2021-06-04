@@ -50,7 +50,6 @@ const WordList = ({ children }: WordListProps) => {
     return (
       <View style={styles.row}>
         {children.map((child, index) => {
-          console.log(child);
           return (
             <View
               key={index}

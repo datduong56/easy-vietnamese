@@ -1,56 +1,41 @@
+import ProgressBar from '@components/progress-bar';
+import { Color } from '@const/color';
 import { Icon } from 'const/icon';
-import React from 'react';
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
-import LinearGradient from 'react-native-linear-gradient';
 
-const useStyles = (inset: EdgeInsets) =>
+const useStyles = () =>
   StyleSheet.create({
-    container: {
-      height: inset.top + 50,
-      flexDirection: 'row',
+    backButton: {
+      height: 44,
+      width: 44,
+      marginBottom: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    center: { flex: 4 / 6, alignItems: 'center', justifyContent: 'center' },
-    right: { flex: 1 / 6, alignItems: 'center', justifyContent: 'center' },
-    left: { flex: 1 / 6 },
-    iconContainer: { height: 44, width: 44, alignItems: 'center', justifyContent: 'center' },
-    icon: { height: 30, width: 30 },
+    headerBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: Color.white },
+    progressBar: { flex: 1, marginRight: 16, marginBottom: 8 },
   });
 
 interface NavBarProps {
-  title: string;
-  leftButton?: ImageSourcePropType;
-  rightButton?: ImageSourcePropType;
-  onPressRightButton?: () => void;
-  onPressLeftButton?: () => void;
+  onPress: () => void;
+  steps: number;
+  step: number;
 }
 
-const NavBar = ({ title, rightButton, leftButton, onPressRightButton, onPressLeftButton }: NavBarProps) => {
-  const inset = useSafeAreaInsets();
-  const styles = useStyles(inset);
+const NavBar = ({ onPress, step, steps }: NavBarProps) => {
+  const styles = useStyles();
+
+  const progress = useMemo(() => <ProgressBar step={step} steps={steps} />, [step, steps]);
+
   return (
-    <LinearGradient style={styles.container} colors={['#fceabb', '#f8b500']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-      <View style={styles.left}>
-        {leftButton && (
-          <TouchableOpacity style={styles.iconContainer} onPress={onPressLeftButton}>
-            <Image source={leftButton} style={styles.icon} />
-          </TouchableOpacity>
-        )}
-      </View>
-      <View style={styles.center}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      <View style={styles.right}>
-        <TouchableOpacity style={styles.iconContainer} onPress={onPressRightButton}>
-          <Image source={rightButton ? rightButton : Icon.settingIcon} style={styles.icon} />
-        </TouchableOpacity>
-      </View>
-    </LinearGradient>
+    <View style={styles.headerBar}>
+      <TouchableOpacity style={styles.backButton} onPress={onPress}>
+        <Image source={Icon.closeIcon} />
+      </TouchableOpacity>
+      <View style={styles.progressBar}>{progress}</View>
+    </View>
   );
 };
 
