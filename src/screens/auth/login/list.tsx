@@ -1,3 +1,4 @@
+import debounce from 'lodash/debounce';
 import React, { forwardRef, memo } from 'react';
 import { Animated, Dimensions, ImageSourcePropType, NativeScrollEvent, NativeSyntheticEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Item from './item';
@@ -45,7 +46,7 @@ const List = forwardRef<any, ListType>(({ showText, color, style, onScroll, onIt
       renderItem={({ item }) => {
         return <Item {...item} color={color} showText={showText} />;
       }}
-      onMomentumScrollEnd={ev => {
+      onScrollEndDrag={ev => {
         const newIndex = Math.round(ev.nativeEvent.contentOffset.y / ITEM_HEIGHT);
 
         if (onItemIndexChange) {

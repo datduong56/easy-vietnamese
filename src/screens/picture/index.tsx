@@ -31,25 +31,17 @@ const Picture = () => {
 
   const renderPictureHomeWork = ({ item, index }: { item: PictureHomeworkType; index: number }) => {
     return (
-      <TouchableOpacity activeOpacity={1} style={{}} onPress={() => setChosenAnswer(index)}>
+      <TouchableOpacity style={{ elevation: 10, backgroundColor: '#fff', borderRadius: 16 }} onPress={() => setChosenAnswer(index)}>
         <View
           style={{
             width: Dimensions.get('window').width / 2 - 32,
             aspectRatio: 1,
-            borderRadius: 16,
-            marginHorizontal: 8,
-            marginVertical: 12,
-            backgroundColor: Color.white,
-            justifyContent: 'space-around',
-            alignItems: 'center',
           }}>
           <FastImage source={{ uri: item.picture }} style={{ width: '100%', height: '100%', borderRadius: 16 }} />
         </View>
-        <TouchableOpacity>
-          <Text style={[{ textAlign: 'center' }, { color: chosenAnswer === index ? 'red' : 'black' }]}>
-            {ANSWER_FLAG[index]}. {item.answer}
-          </Text>
-        </TouchableOpacity>
+        <Text style={[{ textAlign: 'center' }, { color: chosenAnswer === index ? 'red' : 'black' }]}>
+          {ANSWER_FLAG[index]}. {item.answer}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -61,7 +53,15 @@ const Picture = () => {
       <NavBar onPress={goBack} step={currentIndex + 1} steps={PICTURE_DATA.length} />
       <View style={styles.root}>
         <Text style={styles.title}>Choose the best answer:</Text>
-        <FlatList data={PICTURE_DATA[currentIndex].question} renderItem={renderPictureHomeWork} numColumns={2} style={{ marginHorizontal: 8 }} />
+        <FlatList
+          columnWrapperStyle={{ justifyContent: 'space-evenly' }}
+          data={PICTURE_DATA[currentIndex].question}
+          renderItem={renderPictureHomeWork}
+          numColumns={2}
+          style={{ marginHorizontal: 8 }}
+          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          contentContainerStyle={{ flex: 1 }}
+        />
         <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => {}} />
       </View>
     </>

@@ -1,4 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import instance from '@services/connection-instance';
+
+export enum LoginMethod {
+  PHONE = 0,
+  GOOGLE = 1,
+  FACEBOOK = 2,
+}
 
 interface AuthState {
   token: string | null;
@@ -12,8 +19,8 @@ export const logout: any = createAsyncThunk('auth/logout', async () => {
   // await instance.get('/user/logout');
 });
 
-export const login: any = createAsyncThunk('auth/login', async () => {
-  // await instance.post('/auth/login');
+export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }) => {
+  // const result = await instance.post('/auth/login', { token: '', loginMethod });
   return 'token';
 });
 

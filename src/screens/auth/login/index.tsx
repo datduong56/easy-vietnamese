@@ -3,7 +3,7 @@ import { Icon } from '@const/icon';
 import { useNavigation } from '@react-navigation/core';
 import { setToken } from '@services/connection-instance';
 import { login } from '@stores/slices/auth';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Animated, Dimensions, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import List from './list';
@@ -46,8 +46,10 @@ const Login = () => {
 
   const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
 
+  const [currentLoginMethod, setCurrentLoginMethod] = useState<number>(0);
+
   useEffect(() => {
-    scrollY.addListener(v => {
+    const unsubscribe = scrollY.addListener(v => {
       if (darkRef && darkRef?.current) {
         darkRef.current.scrollToOffset({
           offset: v.value,
@@ -55,7 +57,9 @@ const Login = () => {
         });
       }
     });
-  });
+
+    return () => scrollY.removeListener(unsubscribe);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -63,13 +67,19 @@ const Login = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Login with...</Text>
       </View>
-      <List color={Color.tintColor1} style={StyleSheet.absoluteFillObject} onScroll={onScroll} data={data} />
+      <List
+        color={Color.tintColor1}
+        style={StyleSheet.absoluteFillObject}
+        onScroll={onScroll}
+        data={data}
+        onItemIndexChange={current => setCurrentLoginMethod(current)}
+      />
       <List ref={darkRef} color={Color.dark} data={data} showText style={styles.iconList} />
       <View style={styles.buttonContainer}>
         <View style={styles.line} />
         <TouchableOpacity
           onPress={() => {
-            dispatch(login());
+            dispatch(login({ loginMethod: currentLoginMethod }));
           }}
           style={styles.button}
           activeOpacity={0.8}>
