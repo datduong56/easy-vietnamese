@@ -1,8 +1,11 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
 import { useNavigation } from '@react-navigation/core';
+import { setToken } from '@services/connection-instance';
+import { login } from '@stores/slices/auth';
 import React, { useRef, useEffect } from 'react';
 import { Animated, Dimensions, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import List from './list';
 
 const ICON_SIZE = 42;
@@ -37,9 +40,10 @@ const data = [
 ];
 
 const Login = () => {
-  const { navigate } = useNavigation();
   const darkRef = useRef<any>();
   const scrollY = useRef(new Animated.Value(0)).current;
+  const dispatch = useDispatch();
+
   const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
 
   useEffect(() => {
@@ -63,7 +67,12 @@ const Login = () => {
       <List ref={darkRef} color={Color.dark} data={data} showText style={styles.iconList} />
       <View style={styles.buttonContainer}>
         <View style={styles.line} />
-        <TouchableOpacity onPress={() => navigate('BottomTabbar')} style={styles.button} activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(login());
+          }}
+          style={styles.button}
+          activeOpacity={0.8}>
           <Text style={styles.buttonTitle}>Let's go!</Text>
         </TouchableOpacity>
       </View>

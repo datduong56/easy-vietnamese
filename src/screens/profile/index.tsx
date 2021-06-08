@@ -1,8 +1,10 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
+import { logout } from '@stores/slices/auth';
 import React from 'react';
 import { StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch } from 'react-redux';
 import Achievement from './achievement';
 import Friend from './friend';
 import Information from './information';
@@ -17,6 +19,8 @@ const useStyle = () =>
 
 const Profile = () => {
   const styles = useStyle();
+  const dispatch = useDispatch();
+
   return (
     <ScrollView>
       <LinearGradient colors={Color.linearGradient} style={styles.bound} start={{ x: 0.8, y: 0.1 }} end={{ x: 1, y: 1 }} />
@@ -24,7 +28,11 @@ const Profile = () => {
       <Statistic />
       {/* <Friend /> */}
       <Achievement />
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => {
+          dispatch(logout());
+        }}>
         <Image source={Icon.settingIcon} style={styles.icon} />
       </TouchableOpacity>
     </ScrollView>

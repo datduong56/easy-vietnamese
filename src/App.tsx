@@ -5,10 +5,11 @@ import RootStack from '@navigators/root-stack-navigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import store from '@stores/index';
 import { Provider } from 'react-redux';
+import { navigationRef } from './navigators';
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <SafeAreaProvider>
         <Provider store={store}>
           <RootStack />
