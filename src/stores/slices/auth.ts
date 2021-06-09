@@ -22,20 +22,24 @@ export const logout: any = createAsyncThunk('auth/logout', async () => {
 });
 
 const loginByGoogle = async (loginMethod: LoginMethod) => {
+  GoogleSignin.configure({
+    webClientId: '268066571744-qqarnouc9bpmoubbrhkh8pqe6fj8des4.apps.googleusercontent.com',
+  });
+  await GoogleSignin.hasPlayServices();
   const { idToken } = await GoogleSignin.signIn();
+  if (!idToken) {
+    return;
+  }
   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  const token = await auth().signInWithCredential(googleCredential);
-  return await instance.post('/auth/login', { token: token, loginMethod });
+  const { user } = await auth().signInWithCredential(googleCredential);
+  const token = await user.getIdTokenResult();
+  return await instance.post('/auth/login', { token: token.token, loginMethod: 'Google' });
 };
 
 export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }) => {
-  GoogleSignin.configure({
-    webClientId: '',
-  });
   try {
     if (loginMethod === LoginMethod.GOOGLE) {
-      const result = loginByGoogle(loginMethod);
-      return result;
+      return await loginByGoogle(loginMethod);
     }
     if (loginMethod === LoginMethod.PHONE) {
       // Code
@@ -57,6 +61,7 @@ const authSlice = createSlice({
       state.token = null;
     },
     [login.fulfilled]: (state, { payload }) => {
+      console.log('===========', payload);
       state.token = payload.accessToken;
     },
   },
