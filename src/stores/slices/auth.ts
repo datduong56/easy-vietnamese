@@ -21,22 +21,27 @@ export const logout: any = createAsyncThunk('auth/logout', async () => {
   // await instance.get('/user/logout');
 });
 
+const loginByGoogle = async (loginMethod: LoginMethod) => {
+  const { idToken } = await GoogleSignin.signIn();
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  const token = await auth().signInWithCredential(googleCredential);
+  return await instance.post('/auth/login', { token: token, loginMethod });
+};
+
 export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }) => {
   GoogleSignin.configure({
     webClientId: '',
   });
   try {
     if (loginMethod === LoginMethod.GOOGLE) {
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      const token = await auth().signInWithCredential(googleCredential);
-      const result = await instance.post('/auth/login', { token: token, loginMethod });
-      console.log(result);
+      const result = loginByGoogle(loginMethod);
       return result;
     }
     if (loginMethod === LoginMethod.PHONE) {
+      // Code
     }
     if (loginMethod === LoginMethod.FACEBOOK) {
+      // Code
     }
   } catch (e) {
     console.log(e);
