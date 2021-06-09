@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import instance from '@services/connection-instance';
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export enum LoginMethod {
   PHONE = 0,
@@ -20,8 +22,25 @@ export const logout: any = createAsyncThunk('auth/logout', async () => {
 });
 
 export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }) => {
-  // const result = await instance.post('/auth/login', { token: '', loginMethod });
-  return 'token';
+  GoogleSignin.configure({
+    webClientId: '',
+  });
+  try {
+    if (loginMethod === LoginMethod.GOOGLE) {
+      const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const token = await auth().signInWithCredential(googleCredential);
+      const result = await instance.post('/auth/login', { token: token, loginMethod });
+      console.log(result);
+      return result;
+    }
+    if (loginMethod === LoginMethod.PHONE) {
+    }
+    if (loginMethod === LoginMethod.FACEBOOK) {
+    }
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 const authSlice = createSlice({
@@ -33,7 +52,7 @@ const authSlice = createSlice({
       state.token = null;
     },
     [login.fulfilled]: (state, { payload }) => {
-      state.token = payload;
+      state.token = payload.accessToken;
     },
   },
 });
