@@ -1,4 +1,3 @@
-import debounce from 'lodash/debounce';
 import React, { forwardRef, memo } from 'react';
 import { Animated, Dimensions, ImageSourcePropType, NativeScrollEvent, NativeSyntheticEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Item from './item';

@@ -21,7 +21,7 @@ export const logout: any = createAsyncThunk('auth/logout', async () => {
   // await instance.get('/user/logout');
 });
 
-const loginByGoogle = async (loginMethod: LoginMethod) => {
+const loginByGoogle = async () => {
   GoogleSignin.configure({
     webClientId: '268066571744-qqarnouc9bpmoubbrhkh8pqe6fj8des4.apps.googleusercontent.com',
   });
@@ -36,13 +36,13 @@ const loginByGoogle = async (loginMethod: LoginMethod) => {
   return await instance.post('/auth/login', { token: token.token, loginMethod: 'Google' });
 };
 
-export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }) => {
+export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }: { loginMethod: LoginMethod }) => {
   try {
     if (loginMethod === LoginMethod.GOOGLE) {
-      return await loginByGoogle(loginMethod);
+      return await loginByGoogle();
     }
     if (loginMethod === LoginMethod.PHONE) {
-      // Code
+      // code
     }
     if (loginMethod === LoginMethod.FACEBOOK) {
       // Code
@@ -62,7 +62,7 @@ const authSlice = createSlice({
     },
     [login.fulfilled]: (state, { payload }) => {
       console.log('===========', payload);
-      state.token = payload.accessToken;
+      state.token = payload.data.accessToken;
     },
   },
 });

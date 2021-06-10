@@ -2,8 +2,6 @@ import EZButton from '@components/ez-button';
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import Header from './layout/header';
-import WordList from './list-word/list-word';
-import Word from './list-word/word';
 
 const words = [
   { id: 0, word: 'Where' },
@@ -27,11 +25,6 @@ const Homework = () => {
   return (
     <View style={styles.container}>
       <Header />
-      <WordList>
-        {words.map(word => (
-          <Word key={word.id} {...word} />
-        ))}
-      </WordList>
       <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => Alert.alert('Tính năng đang hoàn thiện')} />
     </View>
   );

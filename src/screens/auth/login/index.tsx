@@ -1,7 +1,5 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
-import { useNavigation } from '@react-navigation/core';
-import { setToken } from '@services/connection-instance';
 import { login } from '@stores/slices/auth';
 import React, { useRef, useEffect, useState } from 'react';
 import { Animated, Dimensions, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
