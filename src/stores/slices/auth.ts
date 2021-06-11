@@ -61,7 +61,6 @@ const authSlice = createSlice({
       state.token = null;
     },
     [login.fulfilled]: (state, { payload }) => {
-      console.log('===========', payload);
       state.token = payload.data.accessToken;
     },
   },
