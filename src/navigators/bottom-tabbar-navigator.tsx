@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
 const BottomTabbar = () => {
   return (
     <Tab.Navigator tabBarOptions={{ showLabel: false, style: styles.tabbarContainer }}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Home"
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => <Image source={Icon.homeIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Video"
         component={Video}
