@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  // baseURL: 'https://ez-api.deadgroup.dev/',
-  baseURL: 'http://192.168.1.10:3000/',
+  baseURL: 'https://ez-api.deadgroup.dev/',
   timeout: 20000,
 });
 
