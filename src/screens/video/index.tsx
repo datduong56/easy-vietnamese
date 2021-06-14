@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import { Color } from '@const/color';
+import { useNavigation } from '@react-navigation/native';
 import { fetchListVideo, videoActions } from '@stores/slices/video';
 import React, { useEffect } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
@@ -14,6 +15,7 @@ const useStyle = () =>
 const Video = () => {
   const styles = useStyle();
   const dispatch = useDispatch();
+  const { navigate } = useNavigation();
 
   const videoData = useSelector(({ video }) => video.data);
   const meta = useSelector(({ video }) => video.meta);
@@ -21,7 +23,11 @@ const Video = () => {
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => {}} style={{ backgroundColor: '#fff', height: 300, elevation: 10 }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigate('VideoPlayer');
+        }}
+        style={{ backgroundColor: '#fff', height: 300, elevation: 10 }}>
         <View>
           <Image source={{ uri: 'https://picsum.photos/200' }} style={{ width: Dimensions.get('window').width, height: 250 }} />
           <View style={{ backgroundColor: '#fff', position: 'absolute', bottom: 8, right: 8, padding: 2, borderRadius: 4 }}>

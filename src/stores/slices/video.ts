@@ -3,7 +3,7 @@ import instance from '@services/connection-instance';
 
 const initialState = {
   fetching: false,
-  data: [],
+  data: [...Array(10).keys()],
   meta: null,
   error: null,
   refreshing: false,
@@ -30,7 +30,7 @@ const videoSlice = createSlice({
     },
     [fetchListVideo.fulfilled]: (state, { payload }) => {
       state.fetching = false;
-      state.data = payload.data;
+      // state.data = payload.data;
       state.meta = payload.meta;
     },
     [fetchListVideo.rejected]: state => {
