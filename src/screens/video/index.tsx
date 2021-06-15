@@ -25,7 +25,7 @@ const Video = () => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigate('VideoPlayer');
+          navigate('VideoPlayer', { videoId: item.id });
         }}
         style={{ backgroundColor: '#fff', height: 300, elevation: 10 }}>
         <View>
