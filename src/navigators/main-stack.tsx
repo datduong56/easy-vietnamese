@@ -13,8 +13,8 @@ const MainStack = () => {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!token && <Stack.Screen name="AuthStack" component={AuthStack} />}
-      {token && (
+      {token && <Stack.Screen name="AuthStack" component={AuthStack} />}
+      {!token && (
         <>
           <Stack.Screen name="BottomTabbar" component={BottomTabbar} />
           <Stack.Screen name="StoriesList" component={StoriesList} />
