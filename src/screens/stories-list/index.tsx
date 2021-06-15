@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import { useNavigation } from '@react-navigation/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';

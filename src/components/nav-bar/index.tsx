@@ -2,7 +2,7 @@ import ProgressBar from '@components/progress-bar';
 import { Color } from '@const/color';
 import { Icon } from 'const/icon';
 import React, { useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const useStyles = () =>
@@ -22,15 +22,16 @@ interface NavBarProps {
   onPress: () => void;
   steps: number;
   step: number;
+  style?: StyleProp<ViewStyle>;
 }
 
-const NavBar = ({ onPress, step, steps }: NavBarProps) => {
+const NavBar = ({ onPress, step, steps, style }: NavBarProps) => {
   const styles = useStyles();
 
   const progress = useMemo(() => <ProgressBar step={step} steps={steps} />, [step, steps]);
 
   return (
-    <View style={styles.headerBar}>
+    <View style={[styles.headerBar, style]}>
       <TouchableOpacity style={styles.backButton} onPress={onPress}>
         <Image source={Icon.closeIcon} />
       </TouchableOpacity>

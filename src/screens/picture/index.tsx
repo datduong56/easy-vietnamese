@@ -9,10 +9,26 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PICTURE_DATA } from './pictureData';
 
 const styles = StyleSheet.create({
-  root: { backgroundColor: Color.white, flex: 1 },
-  title: { fontSize: 20 },
+  root: { backgroundColor: Color.dark, flex: 1 },
+  title: { fontSize: 20, color: Color.grey, marginBottom: 24, marginLeft: 19 },
   button: { width: '70%', alignSelf: 'center', marginBottom: 24 },
   titleButton: { textAlign: 'center' },
+  question: {
+    backgroundColor: Color.dark,
+    borderRadius: 16,
+    width: Dimensions.get('window').width / 2 - 32,
+    aspectRatio: 0.75,
+    borderWidth: 3,
+    elevation: 5,
+  },
+  questionWarper: { justifyContent: 'space-evenly' },
+  questionImageContainer: { flex: 4 / 5, alignItems: 'center', justifyContent: 'center' },
+  questionImage: { width: '80%', height: '80%', borderRadius: 8 },
+  answerContainer: { flex: 1 / 5, justifyContent: 'center' },
+  answer: { textAlign: 'center', fontSize: 15, fontWeight: 'bold' },
+  space: { height: 16 },
+  flex: { flex: 1 },
+  margin8: { marginHorizontal: 8 },
 });
 
 interface PictureHomeworkType {
@@ -25,42 +41,38 @@ interface PictureHomeworkType {
 
 const Picture = () => {
   const { goBack } = useNavigation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [chosenAnswer, setChosenAnswer] = useState<number>();
-  const ANSWER_FLAG = ['A', 'B', 'C', 'D'];
 
   const renderPictureHomeWork = ({ item, index }: { item: PictureHomeworkType; index: number }) => {
     return (
-      <TouchableOpacity style={{ elevation: 10, backgroundColor: '#fff', borderRadius: 16 }} onPress={() => setChosenAnswer(index)}>
-        <View
-          style={{
-            width: Dimensions.get('window').width / 2 - 32,
-            aspectRatio: 1,
-          }}>
-          <FastImage source={{ uri: item.picture }} style={{ width: '100%', height: '100%', borderRadius: 16 }} />
+      <TouchableOpacity
+        style={[styles.question, { borderColor: chosenAnswer === index ? Color.yellow : Color.grey15 }]}
+        onPress={() => setChosenAnswer(index)}>
+        <View style={styles.questionImageContainer}>
+          <FastImage source={{ uri: item.picture }} style={styles.questionImage} />
         </View>
-        <Text style={[{ textAlign: 'center' }, { color: chosenAnswer === index ? 'red' : 'black' }]}>
-          {ANSWER_FLAG[index]}. {item.answer}
-        </Text>
+        <View style={styles.answerContainer}>
+          <Text style={[styles.answer, { color: chosenAnswer === index ? Color.yellow : Color.grey }]}>{item.answer}</Text>
+        </View>
       </TouchableOpacity>
     );
   };
 
-  console.log(currentIndex);
-
   return (
     <>
-      <NavBar onPress={goBack} step={currentIndex + 1} steps={PICTURE_DATA.length} />
+      <NavBar onPress={goBack} step={currentIndex + 1} steps={PICTURE_DATA.length} style={{ backgroundColor: Color.dark }} />
       <View style={styles.root}>
-        <Text style={styles.title}>Choose the best answer:</Text>
+        <Text style={styles.title}>Đâu là con "Cua"?</Text>
         <FlatList
-          columnWrapperStyle={{ justifyContent: 'space-evenly' }}
+          columnWrapperStyle={styles.questionWarper}
           data={PICTURE_DATA[currentIndex].question}
           renderItem={renderPictureHomeWork}
           numColumns={2}
-          style={{ marginHorizontal: 8 }}
-          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-          contentContainerStyle={{ flex: 1 }}
+          style={styles.margin8}
+          ItemSeparatorComponent={() => <View style={styles.space} />}
+          contentContainerStyle={styles.flex}
         />
         <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => {}} />
       </View>

@@ -3,6 +3,7 @@ import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import Header from './layout/header';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const words = [
   { id: 0, word: 'Where' },
   { id: 1, word: 'are' },

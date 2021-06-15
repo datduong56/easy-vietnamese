@@ -1,6 +1,6 @@
 import { Color } from '@const/color';
 import React from 'react';
-import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import Modal from 'react-native-modal';
 
 const EZBottomSheet = ({ isVisible, onPress, customView }) => {

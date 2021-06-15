@@ -2,9 +2,10 @@
 import HorizontalList from '@components/horizontal-list';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = () => {
   return StyleSheet.create({
     container: {

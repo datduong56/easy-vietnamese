@@ -12,4 +12,5 @@ export const Color = {
   whiteLinearGradient: ['#ffffff', '#ffffff'],
   red: '#f85032',
   green: '#14a15f',
+  yellow: '#fceabb',
 };

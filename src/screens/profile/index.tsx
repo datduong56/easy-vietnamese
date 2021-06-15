@@ -6,7 +6,7 @@ import { StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch } from 'react-redux';
 import Achievement from './achievement';
-import Friend from './friend';
+// import Friend from './friend';
 import Information from './information';
 import Statistic from './statistic';
 
