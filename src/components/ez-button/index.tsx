@@ -21,7 +21,7 @@ const useStyle = () =>
 const EZButton = ({ title, style, titleStyle, onPress, onLongPress }: EZButtonProps) => {
   const styles = useStyle();
   return (
-    <TouchableOpacity style={styles.root} onPress={onPress} onLongPress={onLongPress}>
+    <TouchableOpacity style={[styles.root, style]} onPress={onPress} onLongPress={onLongPress}>
       <LinearGradient colors={Color.linearGradient} style={[styles.container, style]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
         <Text style={[styles.title, titleStyle]}>{title}</Text>
       </LinearGradient>
