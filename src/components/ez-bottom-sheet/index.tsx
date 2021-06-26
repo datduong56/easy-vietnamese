@@ -4,14 +4,17 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
 
+export type EZBottomSheetType = 'success' | 'error';
+
 interface EZBottomSheet {
   isVisible: boolean;
   customView?: ReactChild;
   onSuccessButtonPress?: () => void;
-  type: 'success' | 'error';
+  onTryAgainButtonPress?: () => void;
+  type: EZBottomSheetType;
 }
 
-const EZBottomSheet = ({ isVisible, onSuccessButtonPress, customView, type = 'success' }: EZBottomSheet) => {
+const EZBottomSheet = ({ isVisible, onSuccessButtonPress, customView, type = 'success', onTryAgainButtonPress }: EZBottomSheet) => {
   const SuccessView = (
     <View style={[styles.container, { backgroundColor: Color.green }]}>
       <Text style={[styles.title, { color: Color.green1 }]}>Correct answer!</Text>
@@ -30,7 +33,7 @@ const EZBottomSheet = ({ isVisible, onSuccessButtonPress, customView, type = 'su
         <TouchableOpacity style={styles.nextButton} onPress={onSuccessButtonPress}>
           <Text style={[styles.titleButton, { color: Color.green1 }]}>Next question 🚀</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tryAgainButton} onPress={onSuccessButtonPress}>
+        <TouchableOpacity style={styles.tryAgainButton} onPress={onTryAgainButtonPress}>
           <Text style={[styles.titleButton, { color: Color.white }]}>Try again</Text>
         </TouchableOpacity>
       </View>

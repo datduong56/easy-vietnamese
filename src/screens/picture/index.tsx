@@ -1,13 +1,16 @@
-import EZBottomSheet from '@components/ez-bottom-sheet';
+import EZBottomSheet, { EZBottomSheetType } from '@components/ez-bottom-sheet';
 import EZButton from '@components/ez-button';
 import NavBar from '@components/nav-bar';
 import { Color } from '@const/color';
 import { useNavigation } from '@react-navigation/core';
+import { RootState } from '@stores/index';
+import { Answers } from '@stores/slices/img-ex';
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, FlatList, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { PICTURE_DATA } from './pictureData';
+import { useSelector } from 'react-redux';
+import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
   root: { backgroundColor: Color.dark, flex: 1 },
@@ -32,53 +35,76 @@ const styles = StyleSheet.create({
   margin8: { marginHorizontal: 8 },
 });
 
-interface PictureHomeworkType {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  picture: string;
-  answer: string;
+interface ChosenAnswer extends Answers {
+  index: number;
 }
 
 const Picture = () => {
   const { goBack } = useNavigation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [chosenAnswer, setChosenAnswer] = useState<number>();
+  const [chosenAnswer, setChosenAnswer] = useState<ChosenAnswer>();
   const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
+  const [type, setType] = useState<EZBottomSheetType>();
 
-  const renderPictureHomeWork = ({ item, index }: { item: PictureHomeworkType; index: number }) => {
+  const { data, fetching } = useSelector((state: RootState) => state.imgEx);
+
+  const renderPictureHomeWork = ({ item, index }: { item: Answers; index: number }) => {
     return (
       <TouchableOpacity
-        style={[styles.question, { borderColor: chosenAnswer === index ? Color.yellow : Color.grey15 }]}
-        onPress={() => setChosenAnswer(index)}>
+        style={[styles.question, { borderColor: chosenAnswer?.index === index ? Color.yellow : Color.grey15 }]}
+        onPress={() => setChosenAnswer({ ...item, index })}>
         <View style={styles.questionImageContainer}>
-          <FastImage source={{ uri: item.picture }} style={styles.questionImage} />
+          <FastImage source={{ uri: item.image }} style={styles.questionImage} resizeMode={'contain'} />
         </View>
         <View style={styles.answerContainer}>
-          <Text style={[styles.answer, { color: chosenAnswer === index ? Color.yellow : Color.grey }]}>{item.answer}</Text>
+          <Text style={[styles.answer, { color: chosenAnswer?.index === index ? Color.yellow : Color.grey }]}>{item.label}</Text>
         </View>
       </TouchableOpacity>
     );
   };
 
-  return (
+  const checkAnswer = () => {
+    if (chosenAnswer?.label === data[currentIndex].correctAnswer) {
+      setType('success');
+    } else {
+      setType('error');
+    }
+    setShowAnswer(true);
+  };
+
+  return fetching ? (
+    <View style={styles.root}>
+      <LottieView source={require('@assets/animations/searching.json')} autoPlay loop speed={2} />
+    </View>
+  ) : (
     <>
-      <NavBar onPress={goBack} step={currentIndex + 1} steps={PICTURE_DATA.length} style={{ backgroundColor: Color.dark }} />
+      <NavBar onPress={goBack} step={currentIndex + 1} steps={data.length} style={{ backgroundColor: Color.dark }} />
       <View style={styles.root}>
-        <Text style={styles.title}>Đâu là con "Cua"?</Text>
+        <Text style={styles.title}>{`${data[currentIndex]?.question}?`}</Text>
         <FlatList
           columnWrapperStyle={styles.questionWarper}
-          data={PICTURE_DATA[currentIndex].question}
+          data={data[currentIndex]?.answers}
           renderItem={renderPictureHomeWork}
           numColumns={2}
           style={styles.margin8}
           ItemSeparatorComponent={() => <View style={styles.space} />}
           contentContainerStyle={styles.flex}
         />
-        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => setShowAnswer(true)} />
+        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={checkAnswer} />
       </View>
-      <EZBottomSheet isVisible={isShowAnswer} onSuccessButtonPress={() => setShowAnswer(false)} type={'error'} />
+      <EZBottomSheet
+        isVisible={isShowAnswer}
+        onSuccessButtonPress={() => {
+          setCurrentIndex(oldIndex => oldIndex + 1);
+          setChosenAnswer(undefined);
+          setShowAnswer(false);
+        }}
+        onTryAgainButtonPress={() => {
+          setChosenAnswer(undefined);
+          setShowAnswer(false);
+        }}
+        type={type || 'success'}
+      />
     </>
   );
 };
