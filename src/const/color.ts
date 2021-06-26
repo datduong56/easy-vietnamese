@@ -10,7 +10,9 @@ export const Color = {
   dark: '#2D2D2D',
   linearGradient: ['#fceabb', '#f8b500'],
   whiteLinearGradient: ['#ffffff', '#ffffff'],
-  red: '#f85032',
-  green: '#14a15f',
+  red: '#FF8A8A',
+  red1: '#ff2b2b',
+  green: '#8AFF8A',
+  green1: '#17c713',
   yellow: '#fceabb',
 };

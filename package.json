@@ -27,6 +27,7 @@
     "i18next": "^20.1.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "lottie-react-native": "^4.0.2",
     "react": "17.0.1",
     "react-i18next": "^11.8.11",
     "react-native": "0.64.0",

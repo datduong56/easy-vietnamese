@@ -5,7 +5,7 @@ import { getUserInfo } from '@stores/slices/user';
 import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, Image, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Achievement from './achievement';
 import Information from './information';
 

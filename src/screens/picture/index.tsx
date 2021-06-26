@@ -1,3 +1,4 @@
+import EZBottomSheet from '@components/ez-bottom-sheet';
 import EZButton from '@components/ez-button';
 import NavBar from '@components/nav-bar';
 import { Color } from '@const/color';
@@ -44,6 +45,7 @@ const Picture = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [chosenAnswer, setChosenAnswer] = useState<number>();
+  const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
 
   const renderPictureHomeWork = ({ item, index }: { item: PictureHomeworkType; index: number }) => {
     return (
@@ -74,8 +76,9 @@ const Picture = () => {
           ItemSeparatorComponent={() => <View style={styles.space} />}
           contentContainerStyle={styles.flex}
         />
-        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => {}} />
+        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => setShowAnswer(true)} />
       </View>
+      <EZBottomSheet isVisible={isShowAnswer} onSuccessButtonPress={() => setShowAnswer(false)} type={'error'} />
     </>
   );
 };
