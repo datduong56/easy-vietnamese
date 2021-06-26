@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const useStyles = () =>
   StyleSheet.create({
@@ -27,20 +29,25 @@ const useStyles = () =>
 const Information = () => {
   const { t } = useTranslation();
   const styles = useStyles();
+
+  const userInfo = useSelector(state => state.user);
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <FastImage source={{ uri: 'https://i.pravatar.cc/1080' }} style={styles.avatar} />
+        <FastImage source={{ uri: userInfo?.avatar }} style={styles.avatar} />
       </View>
       <View style={styles.informationContainer}>
         <Text style={styles.name} numberOfLines={2}>
-          Đạtt
+          {userInfo?.displayName || 'Chưa có'}
         </Text>
         <View style={styles.descriptionContainer}>
-          <Text>{t('joined')}: ....</Text>
-          <Text>{t('following')}: ....</Text>
-          <Text>{t('follower')}: ....</Text>
-          <Text>{t('national')}: ....</Text>
+          <Text>
+            {t('joined')}: {moment(userInfo?.joined).format('DD/MM/YYYY') || 'Chưa có'}
+          </Text>
+          <Text>
+            {t('national')}: {userInfo?.nation || 'Chưa có'}
+          </Text>
         </View>
       </View>
     </View>
