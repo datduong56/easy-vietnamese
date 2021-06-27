@@ -3,6 +3,7 @@ import instance, { setToken } from '@services/connection-instance';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 export enum LoginMethod {
   PHONE = 0,
@@ -12,14 +13,16 @@ export enum LoginMethod {
 
 interface AuthState {
   token: string | null;
+  error: string | null;
 }
 
 const initialState: AuthState = {
   token: null,
+  error: null,
 };
 
 export const logout: any = createAsyncThunk('auth/logout', async () => {
-  await instance.get('/user/logout');
+  await instance.post('auth/logout');
   AsyncStorage.removeItem('token');
 });
 
@@ -36,6 +39,9 @@ const loginByGoogle = async () => {
   const { user } = await auth().signInWithCredential(googleCredential);
   const token = await user.getIdTokenResult();
   const result: any = await instance.post('/auth/login', { token: token.token, loginMethod: 'Google' });
+  if (!result.data) {
+    return;
+  }
   setToken(result.data.accessToken);
   AsyncStorage.setItem('token', result.data.accessToken);
   return result.data;
@@ -53,7 +59,7 @@ export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }:
       // Code
     }
   } catch (e) {
-    console.log(e);
+    throw e.message;
   }
 });
 
@@ -73,6 +79,9 @@ const authSlice = createSlice({
     },
     [login.fulfilled]: (state, { payload }) => {
       state.token = payload.accessToken;
+    },
+    [login.rejected]: (state, { payload }) => {
+      state.error = payload;
     },
   },
 });

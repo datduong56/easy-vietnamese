@@ -54,6 +54,7 @@ enum AnswerType {
 
 const VoiceScreen = () => {
   const { goBack } = useNavigation();
+
   const [isRecord, setRecord] = useState<boolean>();
   const [result, setResult] = useState<string[]>();
   const sound = new Sound(require('@assets/sound.wav'));

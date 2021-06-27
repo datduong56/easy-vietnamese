@@ -2,6 +2,7 @@
 import { Color } from '@const/color';
 import { useNavigation } from '@react-navigation/core';
 import { getImgExercise } from '@stores/slices/img-ex';
+import { getVoiceExercise } from '@stores/slices/voice-ex';
 import { getWordExercise } from '@stores/slices/word-ex';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
@@ -29,7 +30,10 @@ const Game = () => {
           <Text style={{ textAlign: 'center' }}>Ghép chữ</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigate('Voice')}
+          onPress={() => {
+            dispatch(getVoiceExercise());
+            navigate('Voice');
+          }}
           style={{ height: 100, width: 100, borderRadius: 16, backgroundColor: '#FFF', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ textAlign: 'center' }}>Luyện nói</Text>
         </TouchableOpacity>
