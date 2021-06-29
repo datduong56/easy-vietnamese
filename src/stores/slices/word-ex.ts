@@ -3,17 +3,22 @@ import instance from '@services/connection-instance';
 
 interface WordExState {
   data: any[];
-  meta: any;
+  fetching: boolean;
 }
 
 const initialState: WordExState = {
   data: [],
-  meta: null,
+  fetching: false,
 };
 
 export const getWordExercise = createAsyncThunk('wordEx/getExercise', async () => {
-  const result = await instance.get('words-exercise');
-  return result.data;
+  const result: any[] = await new Promise(resolve =>
+    setTimeout(async () => {
+      const response = await instance.get('words-exercise');
+      resolve(response.data);
+    }, 1000),
+  );
+  return result;
 });
 
 const wordExSlice = createSlice({
@@ -21,9 +26,13 @@ const wordExSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(getWordExercise.pending, state => {
+      state.fetching = true;
+    });
     builder.addCase(getWordExercise.fulfilled, (state, { payload }) => {
-      state.data = payload.data;
-      state.meta = payload.meta;
+      const newData = payload.map(d => ({ ...d, answer: d.answer.split(' ').map((ans: string, i: number) => ({ label: ans, id: i })) }));
+      state.data = newData;
+      state.fetching = false;
     });
   },
 });

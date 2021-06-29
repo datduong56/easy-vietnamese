@@ -1,31 +1,27 @@
+import EZBottomSheet, { EZBottomSheetType } from '@components/ez-bottom-sheet';
 import EZButton from '@components/ez-button';
 import NavBar from '@components/nav-bar';
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
 import { useNavigation } from '@react-navigation/native';
+import { RootState } from '@stores/index';
 import React from 'react';
 import { useState } from 'react';
-import { View, StyleSheet, Alert, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { DraxProvider, DraxSnapbackTargetPreset, DraxView } from 'react-native-drax';
 import LinearGradient from 'react-native-linear-gradient';
-import Sound from 'react-native-sound';
+import { useSelector } from 'react-redux';
 import WordBlock from './word';
-
-const words = [
-  { id: 0, word: 'Bạn' },
-  { id: 1, word: 'đang' },
-  { id: 2, word: 'ở' },
-  { id: 3, word: 'đâu' },
-  { id: 4, word: 'đây' },
-  { id: 5, word: 'trong' },
-  { id: 6, word: 'sạch' },
-  { id: 7, word: 'hoàng' },
-  { id: 8, word: 'tôn' },
-];
+import LottieView from 'lottie-react-native';
+import { BASE_URL } from '@const/const';
+import SoundPlayer from 'react-native-sound-player';
+import xorWith from 'lodash/xorWith';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: Color.dark },
-  button: { position: 'absolute', bottom: 0, width: '70%', alignSelf: 'center', marginBottom: 24 },
+  button: { width: '70%', alignSelf: 'center', marginBottom: 24 },
   titleButton: { textAlign: 'center' },
   title: { fontSize: 20, color: Color.grey },
   icon: { marginRight: 8, height: 32, width: 32, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
@@ -45,62 +41,113 @@ const styles = StyleSheet.create({
   },
   textContainer: { flex: 1, marginHorizontal: 16, flexDirection: 'row', flexWrap: 'wrap' },
   wordContainer: { marginHorizontal: 16, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' },
+  wordWarper: { flex: 1, justifyContent: 'space-between' },
 });
+
+export interface MyAnswer {
+  text: { label: string; id: number }[];
+  result?: EZBottomSheetType;
+  error?: { label: string; id: number }[];
+}
 
 const Homework = () => {
   const { goBack } = useNavigation();
-  const sound = new Sound(require('@assets/sound.wav'));
-  const [text, setText] = useState<string[]>([]);
+  const [myAnswer, setMyAnswer] = useState<MyAnswer>({ text: [] });
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
+
+  const { data, fetching } = useSelector((state: RootState) => state.wordEx);
 
   const playSound = () => {
-    sound.play();
+    SoundPlayer.loadUrl(`${BASE_URL}uploads/${data[currentIndex]?.voice}.mp3`);
+    SoundPlayer.addEventListener('FinishedLoadingURL', () => {
+      SoundPlayer.play();
+    });
   };
 
-  return (
-    <DraxProvider>
-      <View style={styles.root}>
-        <NavBar style={{ backgroundColor: Color.dark }} onPress={goBack} step={1} steps={10} />
-        <View style={styles.titleContainer}>
-          <TouchableOpacity onPress={playSound}>
-            <LinearGradient colors={Color.linearGradient} style={styles.icon} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-              <Image source={Icon.speakerIcon} />
-            </LinearGradient>
-          </TouchableOpacity>
-          <Text style={styles.title}>Where are you now?</Text>
-        </View>
-        <DraxView
-          style={styles.dragContainer}
-          renderContent={() => {
-            return (
-              <>
-                <View style={styles.textContainer}>
-                  {text.map((x, i) => (
-                    <TouchableOpacity key={i} onPress={() => setText(oldText => oldText.filter(a => a !== x))} style={styles.text}>
-                      <Text style={{ color: Color.grey }}>{x}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-                <View style={[styles.underline, styles.top32]} />
-                <View style={[styles.underline, styles.top65]} />
-              </>
-            );
-          }}
-          onReceiveDragDrop={event => {
-            console.log(event);
-            const { name } = event.dragged.payload;
-            setText(oldText => [...oldText, name]);
-            return DraxSnapbackTargetPreset.None;
-          }}
-        />
+  const checkAnswer = () => {
+    const answer: { label: string; id: number }[] = data[currentIndex].answer;
+    const diff = xorWith(answer, myAnswer.text, isEqual);
+    if (isEmpty(diff)) {
+      setMyAnswer(old => ({ ...old, error: [], result: 'success' }));
+      setShowAnswer(true);
+      return;
+    }
+    setMyAnswer(old => ({ ...old, error: diff, result: 'error' }));
+    setShowAnswer(true);
+  };
 
-        <View style={styles.wordContainer}>
-          {words.map(item => (
-            <WordBlock noDrax={text.includes(item.word)} key={item.id} name={item.word} />
-          ))}
+  return fetching ? (
+    <View style={styles.root}>
+      <LottieView source={require('@assets/animations/searching.json')} autoPlay loop speed={2} />
+    </View>
+  ) : (
+    <>
+      <DraxProvider>
+        <View style={styles.root}>
+          <NavBar style={{ backgroundColor: Color.dark }} onPress={goBack} step={currentIndex + 1} steps={data.length} />
+          <View style={styles.titleContainer}>
+            <TouchableOpacity onPress={playSound}>
+              <LinearGradient colors={Color.linearGradient} style={styles.icon} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+                <Image source={Icon.speakerIcon} />
+              </LinearGradient>
+            </TouchableOpacity>
+            <Text style={styles.title}>{data[currentIndex]?.question}</Text>
+          </View>
+          <DraxView
+            style={styles.dragContainer}
+            renderContent={() => {
+              return (
+                <>
+                  <View style={styles.textContainer}>
+                    {myAnswer?.text?.map((x, i) => (
+                      <TouchableOpacity
+                        key={i}
+                        onPress={() => {
+                          const newText = myAnswer.text.filter(a => a.label !== x.label);
+                          setMyAnswer(old => ({ ...old, text: newText }));
+                        }}
+                        style={styles.text}>
+                        <Text style={{ color: Color.grey }}>{x.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  <View style={[styles.underline, styles.top32]} />
+                  <View style={[styles.underline, styles.top65]} />
+                </>
+              );
+            }}
+            onReceiveDragDrop={event => {
+              const { name } = event.dragged.payload;
+              const oldText = myAnswer.text.map(x => x.label);
+              setMyAnswer(old => ({ ...old, text: [...oldText, name].map((x, i) => ({ label: x, id: i })) }));
+              return DraxSnapbackTargetPreset.None;
+            }}
+          />
+          <View style={styles.wordWarper}>
+            <View style={styles.wordContainer}>
+              {data[currentIndex]?.keywords?.split(' ')?.map((item: string, index: number) => {
+                const exitBlock = myAnswer.text.findIndex(x => x.label === item);
+                return <WordBlock noDrax={exitBlock !== -1} key={index} name={item} />;
+              })}
+            </View>
+            <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => checkAnswer()} />
+          </View>
         </View>
-        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => Alert.alert('Tính năng đang hoàn thiện')} />
-      </View>
-    </DraxProvider>
+      </DraxProvider>
+      <EZBottomSheet
+        isVisible={isShowAnswer}
+        onSuccessButtonPress={() => {
+          setShowAnswer(false);
+          setTimeout(() => {
+            setCurrentIndex(oldIndex => oldIndex + 1);
+            setMyAnswer({ text: [], error: [] });
+          }, 300);
+        }}
+        type={myAnswer.result || 'error'}
+        myAnswer={{ ...myAnswer, answer: data[currentIndex]?.answer }}
+      />
+    </>
   );
 };
 

@@ -5945,6 +5945,11 @@ react-native-screens@^3.1.1:
   dependencies:
     warn-once "^0.1.0"
 
+react-native-sound-player@^0.10.9:
+  version "0.10.9"
+  resolved "https://registry.yarnpkg.com/react-native-sound-player/-/react-native-sound-player-0.10.9.tgz#4159edd7ed0867ad07d5562e747f526bd8ae9d1d"
+  integrity sha512-ASsSbKuFa2TMVb2cB1ITWx9FadVHnqE4oGuMq8fQMnRFENqANK5oroc0GwUeYtKHHa8iXma4Sdj2cntscQ/H1w==
+
 react-native-sound@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.0.tgz#ad60b55ba8c6dc89917f381ad3713f2738de530f"

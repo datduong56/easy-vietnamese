@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   progressBar: { flex: 1, marginRight: 16, marginBottom: 8 },
 });
 
-enum AnswerType {
+export enum AnswerType {
   missingLetters = 'Thiếu chữ',
   excessLetters = 'Thừa chữ',
   perversive = 'Sai nghĩa',
