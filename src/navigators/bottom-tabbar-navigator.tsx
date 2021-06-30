@@ -38,7 +38,7 @@ const BottomTabbar = () => {
         name="Stories"
         component={Stories}
         options={{
-          tabBarIcon: ({ focused }) => <Image source={Icon.gameIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
+          tabBarIcon: ({ focused }) => <Image source={Icon.homeIcon} style={{ tintColor: focused ? Color.tintColor1 : Color.grey }} />,
         }}
       />
       <Tab.Screen

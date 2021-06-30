@@ -4,7 +4,7 @@ import instance from '@services/connection-instance';
 const initialState = {
   fetching: false,
   data: [...Array(10).keys()],
-  meta: null,
+  meta: {},
   error: null,
   refreshing: false,
 };

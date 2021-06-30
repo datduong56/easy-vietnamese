@@ -1,69 +1,60 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Sound from 'react-native-sound';
-import xor from 'lodash/xor';
-import isEmpty from 'lodash/isEmpty';
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
 import NavBar from '@components/nav-bar';
+import SoundPlayer from 'react-native-sound-player';
+import { BASE_URL } from '@const/const';
+import { RootState } from '@stores/index';
+import { useSelector } from 'react-redux';
+import { MyAnswer } from '@screens/homeword';
+import xorWith from 'lodash/xorWith';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import EZBottomSheet from '@components/ez-bottom-sheet';
+import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-  },
-  root: {
-    flex: 1,
-  },
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  icon: {
-    marginRight: 8,
-    height: 32,
-    width: 32,
+  title: { fontSize: 20, color: Color.grey },
+  root: { flex: 1, backgroundColor: Color.dark },
+  container: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
+  titleContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 8, marginHorizontal: 16, marginBottom: 24 },
+  icon: { marginRight: 8, height: 32, width: 32, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
+  subTitle: { fontSize: 18 },
+  marginHorizontal2: { marginHorizontal: 2 },
+  buttonWarper: { flex: 1, justifyContent: 'center' },
+  buttonMicrophone: {
+    backgroundColor: Color.tintColor1,
+    width: 160,
+    height: 160,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 8,
+    alignSelf: 'center',
   },
-  backButton: {
-    height: 44,
-    width: 44,
-    marginBottom: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  subTitle: {
-    fontSize: 18,
-  },
-  headerBar: { flexDirection: 'row', alignItems: 'center' },
-  progressBar: { flex: 1, marginRight: 16, marginBottom: 8 },
+  hint: { color: Color.grey, marginHorizontal: 16, textAlign: 'center', marginVertical: 8 },
 });
-
-export enum AnswerType {
-  missingLetters = 'Thiếu chữ',
-  excessLetters = 'Thừa chữ',
-  perversive = 'Sai nghĩa',
-  pass = 'Đúng',
-}
 
 const VoiceScreen = () => {
   const { goBack } = useNavigation();
 
   const [isRecord, setRecord] = useState<boolean>();
   const [result, setResult] = useState<string[]>();
-  const sound = new Sound(require('@assets/sound.wav'));
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isVisible, setVisible] = useState<boolean>(false);
-  const [answer, setAnswer] = useState({});
-  const [question] = useState('Bạn đang ở đâu'.toLowerCase().split(' '));
+  const [myAnswer, setMyAnswer] = useState<MyAnswer>({ text: [] });
+  const { data, fetching } = useSelector((state: RootState) => state.voiceEx);
+
+  const scale = useRef(new Animated.Value(1)).current;
 
   const playSound = () => {
-    sound.play();
+    SoundPlayer.loadUrl(`${BASE_URL}uploads/${data[currentIndex]?.voice}.mp3`);
+    SoundPlayer.addEventListener('FinishedLoadingURL', () => {
+      SoundPlayer.play();
+    });
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
@@ -71,12 +62,22 @@ const VoiceScreen = () => {
     setVisible(true);
   };
 
+  const onSpeechVolumeChanged = (e: any) => {
+    if (e.value >= 0) {
+      console.log('onSpeechVolumeChanged: ', e.value);
+      Animated.timing(scale, {
+        toValue: e.value,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => scale.setValue(1));
+    }
+  };
+
   const record = async () => {
     try {
       setRecord(true);
       setResult([]);
-      const a = await Voice.start('vi-VN');
-      console.log('voice', a);
+      await Voice.start('vi-VN');
     } catch (e) {
       console.error(e);
     }
@@ -92,96 +93,75 @@ const VoiceScreen = () => {
   };
 
   Voice.onSpeechResults = onSpeechResults;
+  Voice.onSpeechVolumeChanged = onSpeechVolumeChanged;
+
+  const unMount = async () => {
+    await Voice.destroy();
+  };
+
+  const check = async () => {
+    const isAvailable = await Voice.isAvailable();
+    console.log(isAvailable);
+  };
+
+  useEffect(() => {
+    check();
+    return () => {
+      unMount();
+    };
+  }, []);
 
   useEffect(() => {
     if (!!result && result?.length !== 0 && !isRecord) {
-      const myAnswer = result[0]?.toLowerCase().split(' ');
-      if (question.length > myAnswer.length) {
-        const diff = question.filter(x => !myAnswer.includes(x));
-        setAnswer(oldState => ({ ...oldState, type: AnswerType.missingLetters, error: diff }));
-        return;
-      }
-      if (question.length < myAnswer.length) {
-        const diff = myAnswer.filter(x => !question.includes(x));
-        setAnswer(oldState => ({ ...oldState, type: AnswerType.excessLetters, error: diff }));
-        return;
-      }
-      const diff = xor(question, myAnswer);
+      const answer: { label: string; id: number }[] = data[currentIndex]?.answer;
+      const diff = xorWith(answer, myAnswer.text, isEqual);
       if (isEmpty(diff)) {
-        setAnswer(oldState => ({ ...oldState, type: AnswerType.pass, error: [] }));
+        setMyAnswer(old => ({ ...old, error: [], result: 'success' }));
         return;
       }
-      setAnswer(oldState => ({ ...oldState, type: AnswerType.perversive, error: diff }));
+      setMyAnswer(old => ({ ...old, error: diff, result: 'error' }));
     }
-  }, [result, isRecord, question]);
+  }, [result, isRecord, data]);
 
-  useEffect(() => {
-    return () => Voice.destroy().then(Voice.removeAllListeners);
-  }, []);
-
-  return (
+  return fetching ? (
+    <View style={styles.root}>
+      <LottieView source={require('@assets/animations/searching.json')} autoPlay loop speed={2} />
+    </View>
+  ) : (
     <>
-      <NavBar onPress={goBack} step={Math.floor(Math.random() * 32 + 1)} steps={32} />
+      <NavBar style={{ backgroundColor: Color.dark }} onPress={goBack} step={currentIndex + 1} steps={2} />
       <View style={styles.root}>
-        <Text style={styles.title}>Translate this sentence:</Text>
-        <View style={styles.container}>
+        <View style={styles.titleContainer}>
           <TouchableOpacity onPress={playSound}>
             <LinearGradient colors={Color.linearGradient} style={styles.icon} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
               <Image source={Icon.speakerIcon} />
             </LinearGradient>
           </TouchableOpacity>
-          <Text style={styles.subTitle}>Bạn đang ở đâu?</Text>
+          {data[currentIndex]?.sentence?.map((x: { label: string; id: number }) => (
+            <Text key={x.id} style={[styles.title, styles.marginHorizontal2]}>
+              {x.label}
+            </Text>
+          ))}
         </View>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: Color.tintColor1,
-            width: 100,
-            height: 100,
-            borderRadius: 16,
-            position: 'absolute',
-            bottom: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'center',
+        <View style={styles.buttonWarper}>
+          <TouchableOpacity style={styles.buttonMicrophone} onPressIn={() => record()} onPressOut={() => stop()}>
+            <Animated.Image source={Icon.micIcon} style={{ transform: [{ scale }] }} />
+          </TouchableOpacity>
+          <Text style={styles.hint}>To do this exercise, press and hold the microphone to speak and release to show the result</Text>
+        </View>
+        <EZBottomSheet
+          isVisible={isVisible}
+          onSuccessButtonPress={() => {
+            setVisible(false);
+            setTimeout(() => {
+              setCurrentIndex(oldIndex => oldIndex + 1);
+              setMyAnswer({ text: [], error: [] });
+            }, 300);
           }}
-          onPressIn={() => record()}
-          onPressOut={() => {
-            stop();
-          }}>
-          <Image source={Icon.micIcon} />
-        </TouchableOpacity>
+          type={myAnswer.result || 'error'}
+          myAnswer={{ ...myAnswer, answer: data[currentIndex]?.sentence }}
+        />
       </View>
-      <EZBottomSheet
-        isVisible={isVisible}
-        onPress={() => setVisible(false)}
-        customView={
-          <View
-            style={{
-              backgroundColor: Color.white,
-              height: Dimensions.get('window').height * 0.2,
-              borderTopLeftRadius: 32,
-              borderTopRightRadius: 32,
-            }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text>Đáp án: </Text>
-              {question.map((x, i) => (
-                <Text style={[answer?.error?.includes(x) && { borderBottomWidth: 1 }, i === 0 && { textTransform: 'capitalize' }]}>{x} </Text>
-              ))}
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text>Câu trả lời: </Text>
-              {!!result &&
-                result[0]
-                  ?.split(' ')
-                  .map((x, i) => (
-                    <Text style={[answer?.error?.includes(x) && { borderBottomWidth: 1 }, i === 0 && { textTransform: 'capitalize' }]}>{x} </Text>
-                  ))}
-            </View>
-            <Text>Kết quả: {answer?.type}</Text>
-          </View>
-        }
-      />
     </>
   );
 };

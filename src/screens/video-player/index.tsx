@@ -1,25 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
-import { RootStackParamList } from '@navigators/types';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { Color } from '@const/color';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
-import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-controls';
 
-const VideoPlayer = () => {
-  const { params } = useRoute<RouteProp<RootStackParamList, 'VideoPlayer'>>();
-
-  const videoId: number | null = params?.videoId;
+const Player = () => {
+  const route: any = useRoute();
+  const navigation = useNavigation();
+  const path = route?.params?.path;
 
   return (
     <View style={{ backgroundColor: '#000', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Video
-        source={{ uri: `https://ez-api.deadgroup.dev/video/${videoId}/stream` }}
-        paused={false}
-        controls={true}
-        style={{ aspectRatio: 16 / 9, width: '100%' }}
-      />
+      <VideoPlayer source={{ uri: path }} seekColor={Color.tintColor1} disableFullscreen={true} navigator={navigation} />
     </View>
   );
 };
 
-export default VideoPlayer;
+export default Player;

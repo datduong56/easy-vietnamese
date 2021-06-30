@@ -3,17 +3,22 @@ import instance from '@services/connection-instance';
 
 interface VoiceExState {
   data: any[];
-  meta: any;
+  fetching: boolean;
 }
 
 const initialState: VoiceExState = {
   data: [],
-  meta: null,
+  fetching: false,
 };
 
 export const getVoiceExercise = createAsyncThunk('voiceEx/getExercise', async () => {
-  const result = await instance.get('voice');
-  return result.data;
+  const result: any[] = await new Promise(resolve =>
+    setTimeout(async () => {
+      const response = await instance.get('voice');
+      resolve(response.data);
+    }, 1000),
+  );
+  return result;
 });
 
 const voiceExSlice = createSlice({
@@ -21,9 +26,13 @@ const voiceExSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(getVoiceExercise.pending, state => {
+      state.fetching = true;
+    });
     builder.addCase(getVoiceExercise.fulfilled, (state, { payload }) => {
-      state.data = payload.data;
-      state.meta = payload.meta;
+      const newData = payload.map(d => ({ ...d, sentence: d.sentence.split(' ').map((ans: string, i: number) => ({ label: ans, id: i })) }));
+      state.data = newData;
+      state.fetching = false;
     });
   },
 });
