@@ -30,6 +30,14 @@ export const getUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   }
 });
 
+export const updateUserInfo: any = createAsyncThunk('user/updateUserInfo', async (data, thunkAPI) => {
+  try {
+    await instance.put('user/me', data);
+  } catch (e) {
+    throw e.message;
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -41,6 +49,7 @@ const userSlice = createSlice({
       state.nation = payload.nation;
       state.displayName = payload.displayName;
       state.joined = payload.createdAt;
+      state.avatar = payload.avatar;
     });
     builder.addCase(getUserInfo.rejected, (state: UserState, { payload }: PayloadAction<unknown>) => {
       state.error = payload;

@@ -1,5 +1,6 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { logout } from '@stores/slices/auth';
 import { getUserInfo } from '@stores/slices/user';
 import React, { useEffect } from 'react';
@@ -19,10 +20,14 @@ const useStyle = () =>
 const Profile = () => {
   const styles = useStyle();
   const dispatch = useDispatch();
+  const { navigate } = useNavigation();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(getUserInfo());
-  }, []);
+    if (isFocused) {
+      dispatch(getUserInfo());
+    }
+  }, [isFocused]);
 
   return (
     <ScrollView>
@@ -33,7 +38,7 @@ const Profile = () => {
       <TouchableOpacity
         style={styles.iconContainer}
         onPress={() => {
-          dispatch(logout());
+          navigate('Setting');
         }}>
         <Image source={Icon.settingIcon} style={styles.icon} />
       </TouchableOpacity>

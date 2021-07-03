@@ -1,6 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import Setting from '@screens/setting';
 import StoriesList from '@screens/stories-list';
 import StoryDetail from '@screens/story-detail';
+import UpdateProfile from '@screens/update-profile';
 import React from 'react';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
@@ -28,6 +30,8 @@ const MainStack = () => {
           <Stack.Screen name="BottomTabbar" component={BottomTabbar} />
           <Stack.Screen name="StoriesList" component={StoriesList} />
           <Stack.Screen name="StoryDetail" component={StoryDetail} />
+          <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
         </>
       )}
     </Stack.Navigator>

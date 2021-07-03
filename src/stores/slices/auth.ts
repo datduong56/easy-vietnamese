@@ -21,6 +21,9 @@ const initialState: AuthState = {
 };
 
 export const logout: any = createAsyncThunk('auth/logout', async () => {
+  await GoogleSignin.revokeAccess();
+  await GoogleSignin.signOut();
+  await auth().signOut();
   await instance.post('auth/logout');
   AsyncStorage.removeItem('token');
 });
@@ -46,6 +49,9 @@ export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }:
       return;
     }
     setToken(result.data.accessToken);
+    if (!result?.data?.avatar) {
+      await instance.put('user/me', { avatar: user.photoURL });
+    }
     AsyncStorage.setItem('token', result.data.accessToken);
     return result.data;
   } catch (e) {
