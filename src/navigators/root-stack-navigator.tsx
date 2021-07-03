@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import Homework from '@screens/homeword';
+import Listen from '@screens/listen';
 import Picture from '@screens/picture';
 import Player from '@screens/video-player';
 import Voice from '@screens/voice';
@@ -36,6 +37,7 @@ const RootStack = () => {
       <Stack.Screen name="Voice" component={Voice} />
       <Stack.Screen name="Picture" component={Picture} />
       <Stack.Screen name="Player" component={Player} />
+      <Stack.Screen name="Listen" component={Listen} />
     </Stack.Navigator>
   );
 };

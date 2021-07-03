@@ -142,7 +142,7 @@ const Homework = () => {
           setTimeout(() => {
             setCurrentIndex(oldIndex => oldIndex + 1);
             setMyAnswer({ text: [], error: [] });
-          }, 300);
+          }, 100);
         }}
         type={myAnswer.result || 'error'}
         myAnswer={{ ...myAnswer, answer: data[currentIndex]?.answer }}
