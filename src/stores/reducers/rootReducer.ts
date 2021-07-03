@@ -5,6 +5,7 @@ import { userReducer } from '@stores/slices/user';
 import { videoReducers } from '@stores/slices/video';
 import { wordExReducer } from '@stores/slices/word-ex';
 import { combineReducers } from 'redux';
+import { storyReducers } from '@stores/slices/story';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   wordEx: wordExReducer,
   imgEx: imgExReducer,
   voiceEx: voiceExReducer,
+  story: storyReducers,
 });
 
 export default rootReducer;
