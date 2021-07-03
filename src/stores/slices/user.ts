@@ -49,6 +49,7 @@ const userSlice = createSlice({
       state.nation = payload.nation;
       state.displayName = payload.displayName;
       state.joined = payload.createdAt;
+      state.avatar = payload.avatar;
     });
     builder.addCase(getUserInfo.rejected, (state: UserState, { payload }: PayloadAction<unknown>) => {
       state.error = payload;

@@ -20,7 +20,7 @@ const useStyles = () =>
       elevation: 4,
     },
     avatarContainer: { flex: 2 / 5, alignItems: 'center', justifyContent: 'center', padding: 16 },
-    avatar: { width: '100%', height: '100%', borderRadius: 8 },
+    avatar: { width: 150, height: 150, borderRadius: 8 },
     informationContainer: { flex: 3 / 5, justifyContent: 'center', alignItems: 'flex-start', paddingVertical: 16, paddingRight: 16 },
     name: { fontSize: 22, fontWeight: 'bold' },
     descriptionContainer: { flex: 1, justifyContent: 'center' },

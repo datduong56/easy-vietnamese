@@ -49,6 +49,9 @@ export const login: any = createAsyncThunk('auth/login', async ({ loginMethod }:
       return;
     }
     setToken(result.data.accessToken);
+    if (!result?.data?.avatar) {
+      await instance.put('user/me', { avatar: user.photoURL });
+    }
     AsyncStorage.setItem('token', result.data.accessToken);
     return result.data;
   } catch (e) {
