@@ -30,6 +30,14 @@ export const getUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   }
 });
 
+export const updateUserInfo: any = createAsyncThunk('user/updateUserInfo', async (data, thunkAPI) => {
+  try {
+    await instance.put('user/me', data);
+  } catch (e) {
+    throw e.message;
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,

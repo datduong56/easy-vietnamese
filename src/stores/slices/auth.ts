@@ -21,6 +21,9 @@ const initialState: AuthState = {
 };
 
 export const logout: any = createAsyncThunk('auth/logout', async () => {
+  await GoogleSignin.revokeAccess();
+  await GoogleSignin.signOut();
+  await auth().signOut();
   await instance.post('auth/logout');
   AsyncStorage.removeItem('token');
 });
