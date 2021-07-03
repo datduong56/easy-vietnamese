@@ -1,3 +1,4 @@
+import { Color } from '@const/color';
 import React, { ReactNode } from 'react';
 import { FlatListProps, StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 
@@ -11,7 +12,7 @@ interface HorizontalListProps<T> extends FlatListProps<T> {
 function HorizontalList<T>({ label, trailingButtonPress, ...props }: HorizontalListProps<T>) {
   const trailingButton = (
     <TouchableOpacity onPress={trailingButtonPress}>
-      <Text>Xem tất cả</Text>
+      <Text style={{ color: Color.white }}>Xem tất cả</Text>
     </TouchableOpacity>
   );
 
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     fontSize: 16,
+    color: Color.white,
   },
   contentContainerStyle: {
     paddingHorizontal: 16,

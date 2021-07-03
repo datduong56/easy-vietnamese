@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import HorizontalList from '@components/horizontal-list';
+import { Color } from '@const/color';
 import { useNavigation } from '@react-navigation/native';
 import { RootState } from '@stores/index';
 import { fetchListStoryCategory } from '@stores/slices/story';
 import React, { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = () => {
   return StyleSheet.create({
     container: {
@@ -28,29 +29,47 @@ const Stories = () => {
   const categories = useSelector((state: RootState) => state.story.categories);
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#F3F3F3' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: Color.dark }}>
       {categories.map(category => (
         <HorizontalList
           data={category.stories}
           label={category.name}
           keyExtractor={item => `${item}`}
-          ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
           trailingButtonPress={() =>
             navigate('StoriesList', {
               id: category.id,
             })
           }
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+          ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
+                style={{ height: 300 }}
                 onPress={() => {
                   navigate('StoryDetail', {
                     id: item.id,
                   });
-                }}
-                style={{ padding: 10, borderRadius: 16, elevation: 10, backgroundColor: '#fff' }}>
-                <FastImage source={{ uri: item.covers ? item.covers[0] : '' }} style={{ width: 200, height: 150, borderRadius: 16 }} />
-                <Text style={{ fontSize: 16, color: '#000', marginTop: 16, fontWeight: 'bold' }}>{item.name}</Text>
+                }}>
+                <FastImage
+                  source={{ uri: item.covers ? item.covers[0] : '' }}
+                  style={{ width: Dimensions.get('window').width / 2, height: 300 }}
+                  resizeMode={'cover'}
+                />
+                <LinearGradient
+                  colors={['#00000000', '#000000']}
+                  style={{
+                    width: Dimensions.get('window').width / 2,
+                    height: 300,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 1,
+                  }}>
+                  <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold', paddingHorizontal: 16, marginTop: '125%' }}>{item.name}</Text>
+                </LinearGradient>
               </TouchableOpacity>
             );
           }}

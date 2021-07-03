@@ -7,6 +7,8 @@ import React, { useEffect } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import numeral from 'numeral';
+import FastImage from 'react-native-fast-image';
 
 const useStyle = () =>
   StyleSheet.create({
@@ -28,9 +30,9 @@ const Video = () => {
         }}
         style={{ backgroundColor: '#fff', height: 300, elevation: 10 }}>
         <View>
-          <Image source={{ uri: `https://picsum.photos/400/500?random=${item.id}` }} style={{ width: Dimensions.get('window').width, height: 250 }} />
+          <FastImage source={{ uri: item?.thumbnail }} style={{ width: Dimensions.get('window').width, height: 250 }} />
           <View style={{ backgroundColor: '#fff', position: 'absolute', bottom: 8, right: 8, padding: 2, borderRadius: 4 }}>
-            <Text>14:20</Text>
+            <Text>{numeral(item?.duration).format('00:00:00')}</Text>
           </View>
         </View>
         <Text style={{ marginTop: 16, marginLeft: 16 }}>{item?.title || 'Hello'}</Text>
