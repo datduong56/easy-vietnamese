@@ -31,6 +31,8 @@ const EZBottomSheet = ({ isVisible, onSuccessButtonPress, customView, type = 'su
     </View>
   );
 
+  console.log(myAnswer);
+
   const showAnswer = () => {
     if (myAnswer?.text && myAnswer.text.length > 0) {
       return (

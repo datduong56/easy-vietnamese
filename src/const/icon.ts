@@ -22,4 +22,5 @@ export const Icon = {
   googleIcon: require('@assets/icons/google-plus.png'),
   phoneIcon: require('@assets/icons/phone-call.png'),
   micIcon: require('@assets/icons/microphone.png'),
+  volumeIcon: require('@assets/icons/volume.png'),
 };

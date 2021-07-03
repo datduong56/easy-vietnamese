@@ -64,9 +64,9 @@ const VoiceScreen = () => {
 
   const onSpeechVolumeChanged = (e: any) => {
     if (e.value >= 0) {
-      console.log('onSpeechVolumeChanged: ', e.value);
+      const value = e.value > 3 ? 3 : e.value;
       Animated.timing(scale, {
-        toValue: e.value,
+        toValue: value,
         duration: 500,
         useNativeDriver: true,
       }).start(() => scale.setValue(1));
@@ -113,15 +113,16 @@ const VoiceScreen = () => {
 
   useEffect(() => {
     if (!!result && result?.length !== 0 && !isRecord) {
-      const answer: { label: string; id: number }[] = data[currentIndex]?.answer;
-      const diff = xorWith(answer, myAnswer.text, isEqual);
+      const text = result[0].split(' ').map((x, i) => ({ label: x, id: i }));
+      const answer: { label: string; id: number }[] = data[currentIndex]?.sentence;
+      const diff = xorWith(answer, text, isEqual);
       if (isEmpty(diff)) {
-        setMyAnswer(old => ({ ...old, error: [], result: 'success' }));
+        setMyAnswer(old => ({ ...old, text, error: [], result: 'success' }));
         return;
       }
-      setMyAnswer(old => ({ ...old, error: diff, result: 'error' }));
+      setMyAnswer(old => ({ ...old, text, error: diff, result: 'error' }));
     }
-  }, [result, isRecord, data]);
+  }, [result, isRecord, data, currentIndex]);
 
   return fetching ? (
     <View style={styles.root}>
@@ -156,7 +157,7 @@ const VoiceScreen = () => {
             setTimeout(() => {
               setCurrentIndex(oldIndex => oldIndex + 1);
               setMyAnswer({ text: [], error: [] });
-            }, 300);
+            }, 100);
           }}
           type={myAnswer.result || 'error'}
           myAnswer={{ ...myAnswer, answer: data[currentIndex]?.sentence }}
