@@ -5,10 +5,11 @@ import { RootState } from '@stores/index';
 import { fetchListVideo, videoActions } from '@stores/slices/video';
 import React, { useEffect } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import numeral from 'numeral';
 import FastImage from 'react-native-fast-image';
+import LottieView from 'lottie-react-native';
 
 const useStyle = () =>
   StyleSheet.create({
@@ -20,7 +21,7 @@ const Video = () => {
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
 
-  const { data, meta, refreshing } = useSelector((state: RootState) => state.video);
+  const { data, meta, refreshing, fetching } = useSelector((state: RootState) => state.video);
 
   const renderItem = ({ item }) => {
     return (
@@ -44,7 +45,11 @@ const Video = () => {
     dispatch(fetchListVideo());
   }, []);
 
-  return (
+  return fetching ? (
+    <View style={styles.root}>
+      <LottieView source={require('@assets/animations/video_loading.json')} autoPlay loop speed={2} />
+    </View>
+  ) : (
     <View style={styles.root}>
       <FlatList
         data={data}

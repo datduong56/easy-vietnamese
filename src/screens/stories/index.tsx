@@ -5,18 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { RootState } from '@stores/index';
 import { fetchListStoryCategory } from '@stores/slices/story';
 import React, { useEffect } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
-
-const useStyles = () => {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-  });
-};
+import LottieView from 'lottie-react-native';
 
 const Stories = () => {
   const { navigate } = useNavigation();
@@ -26,9 +19,13 @@ const Stories = () => {
     dispatch(fetchListStoryCategory());
   }, []);
 
-  const categories = useSelector((state: RootState) => state.story.categories);
+  const { categories, fetching } = useSelector((state: RootState) => state.story);
 
-  return (
+  return fetching ? (
+    <View style={{ flex: 1, backgroundColor: Color.dark, justifyContent: 'center' }}>
+      <LottieView source={require('@assets/animations/story_loading.json')} autoPlay loop />
+    </View>
+  ) : (
     <ScrollView style={{ flex: 1, backgroundColor: Color.dark }}>
       {categories.map(category => (
         <HorizontalList

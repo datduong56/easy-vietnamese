@@ -2,6 +2,7 @@
 import { Color } from '@const/color';
 import { useNavigation } from '@react-navigation/core';
 import { getImgExercise } from '@stores/slices/img-ex';
+import { getListenExercise } from '@stores/slices/listen-ex';
 import { getVoiceExercise } from '@stores/slices/voice-ex';
 import { getWordExercise } from '@stores/slices/word-ex';
 import React from 'react';
@@ -47,6 +48,7 @@ const Game = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
+            dispatch(getListenExercise());
             navigate('Listen');
           }}
           style={{ height: 100, width: 100, borderRadius: 16, backgroundColor: '#FFF', alignItems: 'center', justifyContent: 'center' }}>

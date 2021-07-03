@@ -1,17 +1,20 @@
-// import EZBottomSheet, { EZBottomSheetType } from '@components/ez-bottom-sheet';
+import EZBottomSheet from '@components/ez-bottom-sheet';
 import EZButton from '@components/ez-button';
 import NavBar from '@components/nav-bar';
 import { Color } from '@const/color';
 import { useNavigation } from '@react-navigation/core';
-// import { RootState } from '@stores/index';
-import { Answers } from '@stores/slices/img-ex';
-import React from 'react';
+import { RootState } from '@stores/index';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import LottieView from 'lottie-react-native';
 import { Icon } from '@const/icon';
+import isEqual from 'lodash/isEqual';
+import xorWith from 'lodash/xorWith';
+import isEmpty from 'lodash/isEmpty';
+import { MyAnswer } from '@screens/homeword';
 
 const styles = StyleSheet.create({
   root: { backgroundColor: Color.dark, flex: 1 },
@@ -72,30 +75,27 @@ const styles = StyleSheet.create({
   },
 });
 
-interface ChosenAnswer extends Answers {
-  index: number;
-}
-
 const Listen = () => {
   const { goBack } = useNavigation();
-  // const [currentIndex, setCurrentIndex] = useState<number>(0);
-  // const [chosenAnswer, setChosenAnswer] = useState<ChosenAnswer>();
-  // const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
-  // const [type, setType] = useState<EZBottomSheetType>();
-  // const [focused, setFocused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [myAnswer, setMyAnswer] = useState<MyAnswer>({ text: [] });
+  const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
+  const [text, setText] = useState<string>('');
 
-  const fetching = false;
+  const { data, fetching } = useSelector((state: RootState) => state.listenEx);
 
-  // const { data, fetching } = useSelector((state: RootState) => state.imgEx);
-
-  // const checkAnswer = () => {
-  //   if (chosenAnswer?.label === data[currentIndex].correctAnswer) {
-  //     setType('success');
-  //   } else {
-  //     setType('error');
-  //   }
-  //   setShowAnswer(true);
-  // };
+  const checkAnswer = () => {
+    const answer = data[currentIndex].sentence;
+    const myAns = text.split(' ').map((x, i) => ({ label: x, id: i }));
+    const diff = xorWith(answer, myAns, isEqual);
+    if (isEmpty(diff)) {
+      setMyAnswer({ text: myAns, error: [], result: 'success' });
+      setShowAnswer(true);
+      return;
+    }
+    setMyAnswer({ text: myAns, error: diff, result: 'error' });
+    setShowAnswer(true);
+  };
 
   return fetching ? (
     <View style={styles.root}>
@@ -127,23 +127,23 @@ const Listen = () => {
             style={styles.textInput}
             placeholder={'Nhập đáp án mà bạn nghe được!'}
             placeholderTextColor={Color.grey}
+            onChangeText={txt => setText(txt)}
           />
         </View>
-        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={() => console.log('aaa')} />
+        <EZButton title={'Check'} style={styles.button} titleStyle={styles.titleButton} onPress={checkAnswer} />
       </KeyboardAwareScrollView>
-      {/* <EZBottomSheet
+      <EZBottomSheet
         isVisible={isShowAnswer}
         onSuccessButtonPress={() => {
-          setCurrentIndex(oldIndex => oldIndex + 1);
-          setChosenAnswer(undefined);
           setShowAnswer(false);
+          setText('');
+          setTimeout(() => {
+            setCurrentIndex(oldIndex => oldIndex + 1);
+          }, 100);
         }}
-        onTryAgainButtonPress={() => {
-          setChosenAnswer(undefined);
-          setShowAnswer(false);
-        }}
-        type={type || 'success'}
-      /> */}
+        type={myAnswer?.result || 'success'}
+        myAnswer={{ ...myAnswer, answer: data[currentIndex].sentence }}
+      />
     </>
   );
 };

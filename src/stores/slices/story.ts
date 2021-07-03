@@ -36,10 +36,12 @@ interface StoryState {
   chapters: ApiResponse<IChapter>;
   storyDetail?: IStory;
   categoryDetails?: IStoryCategory;
+  fetching: boolean;
 }
 
 const initialState: StoryState = {
   categories: [],
+  fetching: false,
   stories: {
     data: [],
     meta: {
@@ -124,9 +126,13 @@ const storySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(fetchListStoryCategory.pending, (state: StoryState) => {
+      state.fetching = true;
+    });
     builder.addCase(fetchListStoryCategory.fulfilled, (state: StoryState, { payload }: PayloadAction<ApiResponse>) => {
       const { data } = payload;
       state.categories = data as any;
+      state.fetching = false;
     });
 
     builder.addCase(fetchStoryCategoryDetail.fulfilled, (state: StoryState, { payload }: PayloadAction<IStoryCategory>) => {

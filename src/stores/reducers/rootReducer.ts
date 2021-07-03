@@ -1,4 +1,5 @@
-import { voiceExReducer } from './../slices/voice-ex';
+import { listenExReducer } from '@stores/slices/listen-ex';
+import { voiceExReducer } from '@stores/slices/voice-ex';
 import { authReducer } from '@stores/slices/auth';
 import { imgExReducer } from '@stores/slices/img-ex';
 import { userReducer } from '@stores/slices/user';
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   imgEx: imgExReducer,
   voiceEx: voiceExReducer,
   story: storyReducers,
+  listenEx: listenExReducer,
 });
 
 export default rootReducer;
