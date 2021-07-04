@@ -63,6 +63,7 @@ const StoriesList = () => {
               onPress={() => {
                 navigate('StoryDetail', {
                   id: item.id,
+                  name: item.name,
                 });
               }}>
               <FastImage
