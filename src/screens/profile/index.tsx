@@ -1,7 +1,6 @@
 import { Color } from '@const/color';
 import { Icon } from '@const/icon';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { logout } from '@stores/slices/auth';
 import { getUserInfo } from '@stores/slices/user';
 import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, Image, TouchableOpacity, View } from 'react-native';

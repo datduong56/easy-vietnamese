@@ -20,6 +20,7 @@ export interface ImageEx {
 interface ImgExState {
   data: ImageEx[];
   fetching: boolean;
+  currentTime?: Date;
 }
 
 const initialState: ImgExState = {
@@ -48,6 +49,7 @@ const imgExSlice = createSlice({
     builder.addCase(getImgExercise.fulfilled, (state, { payload }) => {
       state.data = payload;
       state.fetching = false;
+      state.currentTime = new Date();
     });
   },
 });

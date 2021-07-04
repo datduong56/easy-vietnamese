@@ -5,12 +5,13 @@ import { Color } from '@const/color';
 import { useNavigation } from '@react-navigation/core';
 import { RootState } from '@stores/index';
 import { Answers } from '@stores/slices/img-ex';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, FlatList, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import LottieView from 'lottie-react-native';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
   root: { backgroundColor: Color.dark, flex: 1 },
@@ -45,8 +46,9 @@ const Picture = () => {
   const [chosenAnswer, setChosenAnswer] = useState<ChosenAnswer>();
   const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
   const [type, setType] = useState<EZBottomSheetType>();
+  const [result, setResult] = useState({ show: false, correct: 0, incorrect: 0, time: '' });
 
-  const { data, fetching } = useSelector((state: RootState) => state.imgEx);
+  const { data, fetching, currentTime } = useSelector((state: RootState) => state.imgEx);
 
   const renderPictureHomeWork = ({ item, index }: { item: Answers; index: number }) => {
     return (
@@ -66,15 +68,39 @@ const Picture = () => {
   const checkAnswer = () => {
     if (chosenAnswer?.label === data[currentIndex].correctAnswer) {
       setType('success');
+      setResult(old => ({ ...old, correct: old.correct + 1 }));
     } else {
       setType('error');
+      setResult(old => ({ ...old, incorrect: old.incorrect + 1 }));
     }
     setShowAnswer(true);
   };
 
+  useEffect(() => {
+    if (currentIndex === data.length && !fetching) {
+      const startTime = moment(currentTime);
+      const endTime = moment(new Date());
+      const time = moment(endTime.diff(startTime)).format('m [minute] ss [second]');
+      setResult(old => ({ ...old, show: true, time }));
+    }
+  }, [currentIndex, fetching]);
+
   return fetching ? (
     <View style={styles.root}>
       <LottieView source={require('@assets/animations/searching.json')} autoPlay loop speed={2} />
+    </View>
+  ) : result.show ? (
+    <View style={[styles.root, { justifyContent: 'center' }]}>
+      <View style={{ marginBottom: 24, alignSelf: 'center' }}>
+        <Text
+          style={{ textAlign: 'center', alignSelf: 'center', fontSize: 24, lineHeight: 24, color: Color.grey, marginBottom: 12, fontWeight: 'bold' }}>
+          Summary
+        </Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Practice time: {result.time}</Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Correct answer: {result.correct}</Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Incorrect answer: {result.incorrect}</Text>
+      </View>
+      <EZButton title={'Go back'} style={styles.button} titleStyle={styles.titleButton} onPress={goBack} />
     </View>
   ) : (
     <>

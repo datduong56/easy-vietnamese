@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import EZBottomSheet, { EZBottomSheetType } from '@components/ez-bottom-sheet';
 import EZButton from '@components/ez-button';
 import NavBar from '@components/nav-bar';
@@ -5,7 +6,7 @@ import { Color } from '@const/color';
 import { Icon } from '@const/icon';
 import { useNavigation } from '@react-navigation/native';
 import { RootState } from '@stores/index';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { DraxProvider, DraxSnapbackTargetPreset, DraxView } from 'react-native-drax';
@@ -18,6 +19,7 @@ import SoundPlayer from 'react-native-sound-player';
 import xorWith from 'lodash/xorWith';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: Color.dark },
@@ -55,8 +57,9 @@ const Homework = () => {
   const [myAnswer, setMyAnswer] = useState<MyAnswer>({ text: [] });
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isShowAnswer, setShowAnswer] = useState<boolean>(false);
+  const [result, setResult] = useState({ show: false, correct: 0, incorrect: 0, time: '' });
 
-  const { data, fetching } = useSelector((state: RootState) => state.wordEx);
+  const { data, fetching, currentTime } = useSelector((state: RootState) => state.wordEx);
 
   const playSound = () => {
     SoundPlayer.loadUrl(`${BASE_URL}uploads/${data[currentIndex]?.voice}.mp3`);
@@ -71,15 +74,39 @@ const Homework = () => {
     if (isEmpty(diff)) {
       setMyAnswer(old => ({ ...old, error: [], result: 'success' }));
       setShowAnswer(true);
+      setResult(old => ({ ...old, correct: old.correct + 1 }));
       return;
     }
     setMyAnswer(old => ({ ...old, error: diff, result: 'error' }));
+    setResult(old => ({ ...old, incorrect: old.incorrect + 1 }));
     setShowAnswer(true);
   };
+
+  useEffect(() => {
+    if (currentIndex === data.length && !fetching) {
+      const startTime = moment(currentTime);
+      const endTime = moment(new Date());
+      const time = moment(endTime.diff(startTime)).format('m [minute] ss [second]');
+      setResult(old => ({ ...old, show: true, time }));
+    }
+  }, [currentIndex, fetching]);
 
   return fetching ? (
     <View style={styles.root}>
       <LottieView source={require('@assets/animations/searching.json')} autoPlay loop speed={2} />
+    </View>
+  ) : result.show ? (
+    <View style={[styles.root, { justifyContent: 'center' }]}>
+      <View style={{ marginBottom: 24, alignSelf: 'center' }}>
+        <Text
+          style={{ textAlign: 'center', alignSelf: 'center', fontSize: 24, lineHeight: 24, color: Color.grey, marginBottom: 12, fontWeight: 'bold' }}>
+          Summary
+        </Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Practice time: {result.time}</Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Correct answer: {result.correct}</Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Incorrect answer: {result.incorrect}</Text>
+      </View>
+      <EZButton title={'Go back'} style={styles.button} titleStyle={styles.titleButton} onPress={goBack} />
     </View>
   ) : (
     <>
@@ -143,6 +170,10 @@ const Homework = () => {
             setCurrentIndex(oldIndex => oldIndex + 1);
             setMyAnswer({ text: [], error: [] });
           }, 100);
+        }}
+        onTryAgainButtonPress={() => {
+          setShowAnswer(false);
+          setMyAnswer({ text: [], error: [] });
         }}
         type={myAnswer.result || 'error'}
         myAnswer={{ ...myAnswer, answer: data[currentIndex]?.answer }}

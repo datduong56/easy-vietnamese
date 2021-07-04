@@ -16,6 +16,8 @@ import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import EZBottomSheet from '@components/ez-bottom-sheet';
 import LottieView from 'lottie-react-native';
+import moment from 'moment';
+import EZButton from '@components/ez-button';
 
 const styles = StyleSheet.create({
   title: { fontSize: 20, color: Color.grey },
@@ -35,6 +37,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
+  titleButton: { textAlign: 'center' },
+  button: { width: '70%', alignSelf: 'center', marginBottom: 24 },
   hint: { color: Color.grey, marginHorizontal: 16, textAlign: 'center', marginVertical: 8 },
 });
 
@@ -42,11 +46,12 @@ const VoiceScreen = () => {
   const { goBack } = useNavigation();
 
   const [isRecord, setRecord] = useState<boolean>();
-  const [result, setResult] = useState<string[]>();
+  const [voice, setVoice] = useState<string[]>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isVisible, setVisible] = useState<boolean>(false);
   const [myAnswer, setMyAnswer] = useState<MyAnswer>({ text: [] });
-  const { data, fetching } = useSelector((state: RootState) => state.voiceEx);
+  const { data, fetching, currentTime } = useSelector((state: RootState) => state.voiceEx);
+  const [result, setResult] = useState({ show: false, correct: 0, incorrect: 0, time: '' });
 
   const scale = useRef(new Animated.Value(1)).current;
 
@@ -58,7 +63,7 @@ const VoiceScreen = () => {
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
-    setResult(e.value);
+    setVoice(e.value);
     setVisible(true);
   };
 
@@ -76,7 +81,7 @@ const VoiceScreen = () => {
   const record = async () => {
     try {
       setRecord(true);
-      setResult([]);
+      setVoice([]);
       await Voice.start('vi-VN');
     } catch (e) {
       console.error(e);
@@ -112,21 +117,43 @@ const VoiceScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (!!result && result?.length !== 0 && !isRecord) {
-      const text = result[0].split(' ').map((x, i) => ({ label: x, id: i }));
+    if (currentIndex === data.length) {
+      const startTime = moment(currentTime);
+      const endTime = moment(new Date());
+      const time = moment(endTime.diff(startTime)).format('m [minute] ss [second]');
+      setResult(old => ({ ...old, show: true, time }));
+      return;
+    }
+    if (!!voice && voice?.length !== 0 && !isRecord) {
+      const text = voice[0].split(' ').map((x, i) => ({ label: x, id: i }));
       const answer: { label: string; id: number }[] = data[currentIndex]?.sentence;
       const diff = xorWith(answer, text, isEqual);
       if (isEmpty(diff)) {
         setMyAnswer(old => ({ ...old, text, error: [], result: 'success' }));
+        setResult(old => ({ ...old, correct: old.correct + 1 }));
         return;
       }
       setMyAnswer(old => ({ ...old, text, error: diff, result: 'error' }));
+      setResult(old => ({ ...old, incorrect: old.incorrect + 1 }));
     }
-  }, [result, isRecord, data, currentIndex]);
+  }, [voice, isRecord, data, currentIndex]);
 
   return fetching ? (
     <View style={styles.root}>
       <LottieView source={require('@assets/animations/searching.json')} autoPlay loop speed={2} />
+    </View>
+  ) : result.show ? (
+    <View style={[styles.root, { justifyContent: 'center' }]}>
+      <View style={{ marginBottom: 24, alignSelf: 'center' }}>
+        <Text
+          style={{ textAlign: 'center', alignSelf: 'center', fontSize: 24, lineHeight: 24, color: Color.grey, marginBottom: 12, fontWeight: 'bold' }}>
+          Summary
+        </Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Practice time: {result.time}</Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Correct answer: {result.correct}</Text>
+        <Text style={{ color: Color.grey, fontSize: 18, lineHeight: 18 }}>Incorrect answer: {result.incorrect}</Text>
+      </View>
+      <EZButton title={'Go back'} style={styles.button} titleStyle={styles.titleButton} onPress={goBack} />
     </View>
   ) : (
     <>

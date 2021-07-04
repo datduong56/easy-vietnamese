@@ -4,6 +4,7 @@ import instance from '@services/connection-instance';
 interface WordExState {
   data: any[];
   fetching: boolean;
+  currentTime?: Date;
 }
 
 const initialState: WordExState = {
@@ -33,6 +34,7 @@ const wordExSlice = createSlice({
       const newData = payload.map(d => ({ ...d, answer: d.answer.split(' ').map((ans: string, i: number) => ({ label: ans, id: i })) }));
       state.data = newData;
       state.fetching = false;
+      state.currentTime = new Date();
     });
   },
 });

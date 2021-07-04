@@ -20,6 +20,7 @@ interface ListenExItemResponse {
 interface ListenExState {
   data: ListenExItem[];
   fetching: boolean;
+  currentTime?: Date;
 }
 
 const initialState: ListenExState = {
@@ -49,6 +50,7 @@ const listenExSlice = createSlice({
       const newData = payload.map(d => ({ ...d, sentence: d.sentence.split(' ').map((ans: string, i: number) => ({ label: ans, id: i })) }));
       state.data = newData;
       state.fetching = false;
+      state.currentTime = new Date();
     });
   },
 });

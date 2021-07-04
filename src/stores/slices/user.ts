@@ -30,7 +30,7 @@ export const getUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   }
 });
 
-export const updateUserInfo: any = createAsyncThunk('user/updateUserInfo', async (data, thunkAPI) => {
+export const updateUserInfo: any = createAsyncThunk('user/updateUserInfo', async data => {
   try {
     await instance.put('user/me', data);
   } catch (e) {
