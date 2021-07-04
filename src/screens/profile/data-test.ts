@@ -1,31 +1,3 @@
-export const Follower = [
-  {
-    name: 'Hoàng',
-    experience: 300,
-    avatar: 'https://i.pravatar.cc/150?img=1',
-  },
-  {
-    name: 'Ahihi',
-    experience: 300,
-    avatar: 'https://i.pravatar.cc/150?img=2',
-  },
-  {
-    name: 'Chiến',
-    experience: 100,
-    avatar: 'https://i.pravatar.cc/150?img=5',
-  },
-  {
-    name: 'Kiên',
-    experience: 300,
-    avatar: 'https://i.pravatar.cc/150?img=3',
-  },
-  {
-    name: 'Minh',
-    experience: 300,
-    avatar: 'https://i.pravatar.cc/150?img=4',
-  },
-];
-
 export const Following = [
   {
     name: 'Test 1',
@@ -56,24 +28,38 @@ export const Following = [
 
 export const AchievementList = [
   {
-    title: 'Test 1',
-    description: 'description 1',
-    process: 24,
-    total: 34,
+    title: 'Chăm chỉ',
+    description: 'Làm bài tập 14 ngày liên tiếp',
+    process: 7,
+    total: 14,
     level: 2,
   },
   {
-    title: 'Test 2',
-    description: 'description 2asdasdasdasdasdasdasdasjdalkdjalkdjklajdklajdjadjaklsjdklasjda',
-    process: 1224,
-    total: 3145,
+    title: 'Tiến bộ',
+    description: 'Làm đúng 10 câu liên tiếp',
+    process: 9,
+    total: 10,
     level: 8,
   },
   {
-    title: 'Test 3',
-    description: 'description 3',
-    process: 241,
-    total: 348,
+    title: 'Phát âm như người bản xứ',
+    description: 'Phát âm đúng từ lần đầu tiên',
+    process: 1,
+    total: 1,
     level: 5,
+  },
+  {
+    title: 'Những câu chuyện thú vị',
+    description: 'Đọc ít nhất một chương truyện mỗi ngày',
+    process: 3,
+    total: 7,
+    level: 5,
+  },
+  {
+    title: 'Những video chuyện thú vị',
+    description: 'Xem ít nhất một chương truyện mỗi ngày',
+    process: 5,
+    total: 7,
+    level: 3,
   },
 ];

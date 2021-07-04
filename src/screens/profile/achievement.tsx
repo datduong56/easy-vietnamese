@@ -44,7 +44,7 @@ const Achievement = () => {
             <Text style={{ color: Color.grey }}>{item.description}</Text>
           </View>
         </View>
-        {index !== 2 && <UnderlineSpace />}
+        {index + 1 !== AchievementList.length && <UnderlineSpace />}
       </Fragment>
     );
   };

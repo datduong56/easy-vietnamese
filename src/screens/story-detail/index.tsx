@@ -7,6 +7,7 @@ import PagerView from 'react-native-pager-view';
 import { useDispatch, useSelector } from 'react-redux';
 import HTMLView from 'react-native-htmlview';
 import { Icon } from '@const/icon';
+import { Color } from '@const/color';
 
 const StoryDetail = () => {
   const route: any = useRoute();
@@ -45,9 +46,9 @@ const StoryDetail = () => {
     <View style={{ flex: 1 }}>
       <View style={{ paddingVertical: 16, alignItems: 'center', paddingHorizontal: 16, flexDirection: 'row' }}>
         <TouchableOpacity onPress={goBack}>
-          <Image source={Icon.arrowNextIcon} style={{ transform: [{ rotateY: '180deg' }], marginRight: 8, tintColor: Color.white }} />
+          <Image source={Icon.arrowNextIcon} style={{ transform: [{ rotateY: '180deg' }], marginRight: 8, tintColor: Color.black }} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: Color.white }}>{name}</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: Color.black }}>{name}</Text>
       </View>
       <PagerView
         ref={pagerRef}
